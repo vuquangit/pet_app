@@ -1,89 +1,35 @@
-import React, {FC, useMemo, useState} from 'react';
-import {
-  Button,
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEye} from '@fortawesome/free-solid-svg-icons/faEye';
-import {faEyeSlash} from '@fortawesome/free-solid-svg-icons/faEyeSlash';
+import React, {FC, useMemo, useState} from 'react'
+import {Button, View} from 'react-native'
+import Config from 'react-native-config'
 
-import {useSignIn} from '../../hooks/useSignIn';
-import {isEmail, isValidPassword} from '../../utils';
-import Config from 'react-native-config';
+import {useSignIn} from 'src/hooks/useSignIn'
+import {isEmail, isValidPassword} from 'src/utils'
+import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import {InputField} from 'src/components/Form/InputField'
 
 export const SignInScreen: FC = () => {
-  const {isLoading, onSubmit, error} = useSignIn();
+  const {isLoading, onSubmit, error} = useSignIn()
 
-  const [email, setEmail] = useState<string>(Config?.FAKE_EMAIL || ''); // init test
-  const [password, setPassword] = useState<string>(Config?.FAKE_PASSWORD || ''); // init test
-  const [isPasswordSecure, setIsPasswordSecure] = useState<boolean>(true);
+  const [email, setEmail] = useState<string>(Config?.FAKE_EMAIL || '') // init test
+  const [password, setPassword] = useState<string>(Config?.FAKE_PASSWORD || '') // init test
 
-  const isValidInputs = useMemo<boolean>(
-    () => isEmail(email) && isValidPassword(password),
-    [email, password],
-  );
-
-  const handlePasswordVisibility = () => {
-    setIsPasswordSecure(!isPasswordSecure);
-  };
+  const isValidInputs = useMemo<boolean>(() => isEmail(email) && isValidPassword(password), [email, password])
 
   return (
-    <View>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <Text>{error?.data?.email ?? ''}</Text>
+    <ScreenLayout isSafeAreaView={true} isScrollView>
+      <View className="flex items-center justify-center w-full h-full p-3">
+        <InputField placeholder="Email" value={email} onChangeText={setEmail} errorMessage={error?.email} />
 
-      <View style={styles.passwordWrapper}>
-        <TextInput
-          style={styles.input}
+        <InputField
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry={isPasswordSecure}
+          errorMessage={error?.password}
+          type="password"
         />
-        <TouchableOpacity style={styles.eye} onPress={handlePasswordVisibility}>
-          <FontAwesomeIcon
-            icon={isPasswordSecure ? faEye : faEyeSlash}
-            size={20}
-            color="#aaaaaa"
-          />
-        </TouchableOpacity>
+
+        <Button title="Sign in" disabled={!isValidInputs || isLoading} onPress={() => onSubmit({email, password})} />
       </View>
-
-      <Text>{error?.data?.password ?? ''}</Text>
-
-      <Button
-        title="Sign in"
-        disabled={!isValidInputs || isLoading}
-        onPress={() => onSubmit({email, password})}
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#aaaaaa',
-    backgroundColor: '#fff',
-  },
-  passwordWrapper: {
-    // display: 'flex',
-  },
-  eye: {
-    position: 'absolute',
-    right: 20,
-    top: '35%',
-  },
-});
+    </ScreenLayout>
+  )
+}

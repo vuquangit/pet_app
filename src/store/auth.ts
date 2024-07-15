@@ -1,9 +1,9 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-import {IAuthMe} from '../interfaces/auth';
-import type {RootState} from './index';
+import {IAuthMe} from '../interfaces/auth'
+import type {RootState} from './index'
 
-const initialState = {} as IAuthMe;
+const initialState = {} as IAuthMe
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -15,11 +15,11 @@ export const authSlice = createSlice({
     }),
     resetCredentials: () => initialState,
   },
-});
+})
 
 // Action creators are generated for each case reducer function
-export const {setCredentials, resetCredentials} = authSlice.actions;
+export const {setCredentials, resetCredentials} = authSlice.actions
 
-export default authSlice.reducer;
+export default authSlice.reducer
 
-export const selectCurrentUser = (state: RootState) => state.auth;
+export const selectCurrentUser = (state: RootState) => state.auth

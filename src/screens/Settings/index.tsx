@@ -1,35 +1,33 @@
-import React, {FC} from 'react';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faSliders} from '@fortawesome/free-solid-svg-icons/faSliders';
-import {faWrench} from '@fortawesome/free-solid-svg-icons/faWrench';
+import React, {FC} from 'react'
+import {TabView, SceneMap} from 'react-native-tab-view'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {useWindowDimensions} from 'react-native'
 
-import {Setting} from './Setting';
-import {Setting1} from './Setting1';
+import {Setting} from './Setting'
+import {Setting1} from './Setting1'
 
-const Settings = createMaterialTopTabNavigator();
+const renderScene = SceneMap({
+  first: Setting,
+  second: Setting1,
+})
 
 export const SettingsScreen: FC = () => {
+  const insets = useSafeAreaInsets()
+  const layout = useWindowDimensions()
+
+  const [index, setIndex] = React.useState(0)
+  const [routes] = React.useState([
+    {key: 'first', title: 'Setting'},
+    {key: 'second', title: 'Setting 1'},
+  ])
+
   return (
-    <Settings.Navigator
-      screenOptions={({route}) => ({
-        // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: ({color}) => {
-          let iconName = faSliders;
-
-          if (route.name === 'setting') {
-            iconName = faSliders;
-          } else {
-            iconName = faWrench;
-          }
-
-          return <FontAwesomeIcon icon={iconName} size={16} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-      <Settings.Screen name="setting" component={Setting} />
-      <Settings.Screen name="setting1" component={Setting1} />
-    </Settings.Navigator>
-  );
-};
+    <TabView
+      navigationState={{index, routes}}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{width: layout.width}}
+      style={{paddingTop: insets.top}}
+    />
+  )
+}

@@ -1,15 +1,14 @@
-import React, {FC} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import {createStackNavigator} from '@react-navigation/stack';
+import React, {FC} from 'react'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
-import {SignInScreen} from '../../../screens/Auth/SignIn';
+import {SignInScreen} from 'src/screens/Auth/SignIn'
 
-const Stack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator()
 
-export const AuthStack: FC = () => {
+export const AuthRoutes: FC = () => {
   return (
-    <Stack.Navigator initialRouteName="SignIn">
-      <Stack.Screen
+    <AuthStack.Navigator initialRouteName="SignIn">
+      <AuthStack.Screen
         name="SignIn"
         component={SignInScreen}
         key={'SignIn'}
@@ -19,7 +18,6 @@ export const AuthStack: FC = () => {
           // animationTypeForReplace: state.isSignout ? 'pop' : 'push',
         }}
       />
-      {/* <Stack.Screen name={'Signup'} component={Signup} key={'Signup'} /> */}
-    </Stack.Navigator>
-  );
-};
+    </AuthStack.Navigator>
+  )
+}
