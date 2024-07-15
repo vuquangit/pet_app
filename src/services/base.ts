@@ -15,8 +15,6 @@ import storageKeys from '../constants/storage-keys';
 
 const isDevelopment = Config.NODE_ENV === 'development';
 
-console.log('Config.API_URL:::', Config.API_URL);
-
 const errorCodeSkipList = [
   // 'unauthenticated', // TODO: check login message
   'account_locked', // blocked login
