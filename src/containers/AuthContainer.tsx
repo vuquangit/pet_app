@@ -1,13 +1,12 @@
 import React, {FC} from 'react'
-// import {useAuth} from '../hooks';
-// import {SplashScreen} from '../screens/SplashScreen';
+import {SplashScreen} from 'src/screens/SplashScreen'
+import {useAppSelector} from 'src/store/hook'
 
 type PropsType = {
   children: React.ReactNode
 }
 
 export const AuthContainer: FC<PropsType> = ({children}) => {
-  return children
-  // const {isLaunching} = useAuth();
-  // return isLaunching ? <SplashScreen /> : <>{children}</>;
+  const isLaunching = useAppSelector(state => state.launching.isLaunching)
+  return isLaunching ? <SplashScreen /> : children
 }

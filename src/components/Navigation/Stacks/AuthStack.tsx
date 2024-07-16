@@ -3,12 +3,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 import {SignInScreen} from 'src/screens/Auth/SignIn'
 
-const AuthStack = createNativeStackNavigator()
+const Auth = createNativeStackNavigator()
 
-export const AuthRoutes: FC = () => {
+export const AuthStack: FC = () => {
   return (
-    <AuthStack.Navigator initialRouteName="SignIn">
-      <AuthStack.Screen
+    <Auth.Navigator initialRouteName="SignIn">
+      <Auth.Screen
         name="SignIn"
         component={SignInScreen}
         key={'SignIn'}
@@ -18,6 +18,6 @@ export const AuthRoutes: FC = () => {
           // animationTypeForReplace: state.isSignout ? 'pop' : 'push',
         }}
       />
-    </AuthStack.Navigator>
+    </Auth.Navigator>
   )
 }

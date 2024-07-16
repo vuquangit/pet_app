@@ -1,14 +1,12 @@
-import {useNavigation} from '@react-navigation/native'
-
-import {deviceStorage} from '../store/storage'
-import storageKeys from '../constants/storage-keys'
-
-import {useLoginMutation} from '../services/auth'
+import {deviceStorage} from 'src/store/storage'
+import storageKeys from 'src/constants/storage-keys'
+import {useLoginMutation} from 'src/services/auth'
+import {useAppDispatch} from 'src/store/hook'
+import {setLaunching} from 'src/store/launching'
 import useProfile from './useProfile'
 
 export const useSignIn = () => {
-  const navigation = useNavigation()
-  // const {dispatch} = useContext(AuthContext);
+  const dispatch = useAppDispatch()
 
   // redux store
   const [login, {isLoading, error}] = useLoginMutation()
@@ -19,16 +17,19 @@ export const useSignIn = () => {
 
     // Sign in and redirect to the proper destination if successful.
     try {
+      dispatch(setLaunching({isLaunching: true}))
+
       const loginResponse = await login({email, password}).unwrap()
       const tokens = loginResponse.result?.data
       saveToken(tokens)
-    } catch (error) {
-      console.log('Invalid login attempt', error)
+    } catch {
+      console.log('Login error')
+    } finally {
+      dispatch(setLaunching({isLaunching: false}))
     }
   }
 
   const saveToken = async (tokens: any) => {
-    // StorageService.set(storageKeys.AUTH_PROFILE, tokens);
     // save token local
     await Promise.all([
       deviceStorage.saveItem(storageKeys.access_token, tokens.accessToken),
@@ -36,8 +37,8 @@ export const useSignIn = () => {
     ])
     await fetchProfile()
 
-    // redirect to home
-    navigation.navigate('home')
+    // auto redirect to home
+    console.log('redirect to home')
   }
 
   return {

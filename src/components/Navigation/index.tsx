@@ -6,16 +6,16 @@ import {faHouse} from '@fortawesome/free-solid-svg-icons/faHouse'
 import {faGear} from '@fortawesome/free-solid-svg-icons/faGear'
 import {faUser} from '@fortawesome/free-regular-svg-icons'
 
-import {AuthRoutes} from './Stacks/AuthStack'
-import {HomeNativeStack} from 'src/screens/Home'
+import {AuthStack} from './Stacks/AuthStack'
+import {HomeScreen} from 'src/screens/Home'
 import {ProfileScreen} from 'src/screens/Profile'
 import {SettingsScreen} from 'src/screens/Settings'
 
 import {useAuth} from 'src/hooks/useAuth'
-import {useAppSelector, useAppDispatch} from 'src/store/hook'
-import {selectCurrentUser, setCredentials} from 'src/store/auth'
-import {useLazyGetProfileQuery} from 'src/services/auth'
+import useProfile from 'src/hooks/useProfile'
+import {useAppSelector} from 'src/store/hook'
 import {deviceStorage} from 'src/store/storage'
+import {selectCurrentUser} from 'src/store/auth'
 import storageKeys from 'src/constants/storage-keys'
 
 const Tab = createBottomTabNavigator()
@@ -23,8 +23,7 @@ const Tab = createBottomTabNavigator()
 export const Navigation: FC = () => {
   const {isLoggedIn} = useAuth()
   const user = useAppSelector(selectCurrentUser)
-  const [getProfile] = useLazyGetProfileQuery()
-  const dispatchRtk = useAppDispatch()
+  const {fetchProfile} = useProfile()
 
   // get profile
   useEffect(() => {
@@ -32,18 +31,18 @@ export const Navigation: FC = () => {
       const {value: accessToken} = await deviceStorage.getItem(storageKeys.access_token)
 
       if (accessToken && !user?.email) {
-        // get profile to store
-        const profileResponse = await getProfile().unwrap()
-        const profile = profileResponse?.result?.data as any
-        dispatchRtk(setCredentials(profile))
+        await fetchProfile()
       }
     })()
-  }, [dispatchRtk, getProfile, user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  console.log('isLoggedIn', isLoggedIn)
 
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName={'home'}
+        initialRouteName={isLoggedIn ? 'Home' : 'AuthStack'}
         screenOptions={() => ({
           tabBarActiveTintColor: '#1DA1F2',
           tabBarInactiveTintColor: 'gray',
@@ -52,8 +51,8 @@ export const Navigation: FC = () => {
         {isLoggedIn ? (
           <>
             <Tab.Screen
-              name="home"
-              component={HomeNativeStack}
+              name="Home"
+              component={HomeScreen}
               options={{
                 tabBarLabel: 'Home',
                 tabBarAccessibilityLabel: 'Home',
@@ -82,7 +81,7 @@ export const Navigation: FC = () => {
         ) : (
           <Tab.Screen
             name={'AuthStack'}
-            component={AuthRoutes}
+            component={AuthStack}
             key={'AuthStack'}
             options={{
               title: '',

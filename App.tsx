@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler'
-import React, {FC} from 'react'
+import React, {FC, useEffect} from 'react'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import {Provider} from 'react-redux'
 import {StatusBar} from 'react-native'
+import RNSplashScreen from 'react-native-splash-screen'
 
 import {setupStore} from 'src/store'
 import {Navigation} from 'src/components/Navigation'
@@ -12,16 +13,20 @@ import {AuthContainer} from 'src/containers/AuthContainer'
 const App: FC = () => {
   const store = setupStore()
 
+  useEffect(() => {
+    RNSplashScreen.hide()
+  }, [])
+
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="light-content" />
-      <AuthContainer>
-        <Provider store={store}>
+      <Provider store={store}>
+        <StatusBar barStyle="light-content" />
+        <AuthContainer>
           <VersionCheckContainer>
             <Navigation />
           </VersionCheckContainer>
-        </Provider>
-      </AuthContainer>
+        </AuthContainer>
+      </Provider>
     </SafeAreaProvider>
   )
 }

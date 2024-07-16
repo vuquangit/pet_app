@@ -1,31 +1,37 @@
-import {deviceStorage} from '../store/storage';
-import storageKeys from '../constants/storage-keys';
+import {cloneDeep} from 'lodash'
 
-import {IAuthMe} from '../interfaces/auth';
-import {useLazyGetProfileQuery} from '../services/auth';
-import {setCredentials} from '../store/auth';
-import {useAppDispatch} from '../store/hook';
+import {IAuthMe} from 'src/interfaces/auth'
+import {useLazyGetProfileQuery} from 'src/services/auth'
+import {setCredentials} from 'src/store/auth'
+import {useAppDispatch, useAppSelector} from 'src/store/hook'
+import {setLaunching} from 'src/store/launching'
 
 const useProfile = () => {
-  const [getProfile] = useLazyGetProfileQuery();
-  const dispatch = useAppDispatch();
+  const [getProfile] = useLazyGetProfileQuery()
+  const dispatch = useAppDispatch()
+  const isLaunching = useAppSelector(state => state.launching.isLaunching)
 
   const fetchProfile = async () => {
-    const tokens = deviceStorage.getItem(storageKeys.access_token);
-    if (!tokens) {
-      return;
-    }
+    const isShowSplash = cloneDeep(!isLaunching)
 
     try {
-      const profileResponse = await getProfile().unwrap();
-      const profile = profileResponse.result?.data as IAuthMe;
-      dispatch(setCredentials(profile));
+      if (isShowSplash) {
+        dispatch(setLaunching({isLaunching: true}))
+      }
+
+      const profileResponse = await getProfile().unwrap()
+      const profile = profileResponse.result?.data as IAuthMe
+      dispatch(setCredentials(profile))
     } catch (error) {
-      console.log('fetch profile error', error);
+      console.log('fetch profile error', error)
+    } finally {
+      if (isShowSplash) {
+        dispatch(setLaunching({isLaunching: false}))
+      }
     }
-  };
+  }
 
-  return {fetchProfile};
-};
+  return {fetchProfile}
+}
 
-export default useProfile;
+export default useProfile
