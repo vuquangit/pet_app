@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect} from 'react'
 // import remoteConfig from '@react-native-firebase/remote-config';
 import {
   // Alert,
@@ -6,30 +6,28 @@ import {
   Permission,
   PermissionsAndroid,
   Platform,
-} from 'react-native';
+} from 'react-native'
 // import DeviceInfo from 'react-native-device-info';
 
 type PropsType = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
-const VersionCheckContainer: React.FC<PropsType> = ({children}) => {
+export const VersionCheckContainer: React.FC<PropsType> = ({children}) => {
   useEffect(() => {
     const requestPermission = async () => {
       try {
         const is_permitted = await PermissionsAndroid.check(
           'android.permission.POST_NOTIFICATIONS' as Permission,
-        );
+        )
         if (!is_permitted) {
-          await PermissionsAndroid.request(
-            'android.permission.POST_NOTIFICATIONS' as Permission,
-          );
+          await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS' as Permission)
         }
       } catch (err) {}
-    };
+    }
 
     if (Platform.OS === 'android' && Platform.Version >= 33) {
-      requestPermission();
+      requestPermission()
     }
 
     // TODO: fix install react-native-device-info ???
@@ -91,8 +89,7 @@ const VersionCheckContainer: React.FC<PropsType> = ({children}) => {
     //       showUpdateAlert();
     //     }
     //   });
-  }, []);
+  }, [])
 
-  return <>{children}</>;
-};
-export default VersionCheckContainer;
+  return <>{children}</>
+}

@@ -6,7 +6,7 @@ import {StatusBar} from 'react-native'
 
 import {setupStore} from 'src/store'
 import {Navigation} from 'src/components/Navigation'
-import VersionCheckContainer from 'src/containers/VersionCheckContainer'
+import {VersionCheckContainer} from 'src/containers/VersionCheckContainer'
 import {AuthContainer} from 'src/containers/AuthContainer'
 
 const App: FC = () => {
