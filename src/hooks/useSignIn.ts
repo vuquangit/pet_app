@@ -13,8 +13,6 @@ export const useSignIn = () => {
   const {fetchProfile} = useProfile()
 
   const onSubmit = async ({email, password}: any) => {
-    console.log('email, password', email, password)
-
     // Sign in and redirect to the proper destination if successful.
     try {
       dispatch(setLaunching({isLaunching: true}))

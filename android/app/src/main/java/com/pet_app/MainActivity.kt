@@ -5,6 +5,10 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
+// react-native-splash-screen
+import android.os.Bundle; // Avoid Bundle crashing
+import org.devio.rn.splashscreen.SplashScreen;
+
 class MainActivity : ReactActivity() {
 
   /**
@@ -19,4 +23,13 @@ class MainActivity : ReactActivity() {
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+
+  // react-native-splash-screen
+  init {
+    SplashScreen.show(this)
+  }
+  // override fun onCreate(savedInstanceState: Bundle?) {
+  //   super.onCreate(savedInstanceState)
+  //   SplashScreen.show(this);
+  // }
 }

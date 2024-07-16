@@ -37,8 +37,6 @@ export const Navigation: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('isLoggedIn', isLoggedIn)
-
   return (
     <NavigationContainer>
       <Tab.Navigator
