@@ -6,7 +6,7 @@ import {StatusBar} from 'react-native'
 import RNSplashScreen from 'react-native-splash-screen'
 
 import {setupStore} from 'src/store'
-import {Navigation} from 'src/components/Navigation'
+import {Navigation} from 'src/Navigation'
 import {VersionCheckContainer} from 'src/containers/VersionCheckContainer'
 import {AuthContainer} from 'src/containers/AuthContainer'
 

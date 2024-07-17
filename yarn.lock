@@ -4071,6 +4071,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: da424a8a6f3a96a2e87d01a432ba19315503294ac7e025f9fece656db6b6a0f7b5003bb1fbb51cbb0d9624d964f1b9bb35a51c73af9b2434c7b292c42231c1e5
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -8426,6 +8433,7 @@ __metadata:
     "@types/validator": ^13.12.0
     babel-jest: ^29.6.3
     babel-plugin-module-resolver: ^5.0.2
+    classnames: ^2.5.1
     eslint: ^8.19.0
     humps: ^2.0.1
     jest: ^29.6.3
@@ -8433,6 +8441,7 @@ __metadata:
     nativewind: ^2.0.11
     prettier: 2.8.8
     react: 18.2.0
+    react-hook-form: ^7.52.1
     react-native: 0.74.3
     react-native-config: ^1.5.2
     react-native-device-info: ^10.12.0
@@ -8825,6 +8834,15 @@ __metadata:
   peerDependencies:
     react: ">=17.0.0"
   checksum: 6b4d93209dff04a1f25d9f8e0c56a9a8a80e7889e8e8267299f34449c7e41a9ab90cad24569d03dd7173b56b7496576dba68f71f1d4e5c8be72f0633023668bc
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.52.1":
+  version: 7.52.1
+  resolution: "react-hook-form@npm:7.52.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 224fec214c5c7093b6949bc0a4fce3cf9b7a567a2f36dc3c7feeb1e721c5cccbd21f0f0ab19aa1f5f912014264f9c2224181370007609693b6c5ef6778f59ca5
   languageName: node
   linkType: hard
 

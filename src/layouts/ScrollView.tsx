@@ -8,7 +8,7 @@ export type ScrollViewProps = {
 
 export const ScrollView: FC<ScrollViewProps> = ({isScrollView, ...props}) => {
   return isScrollView ? (
-    <RNScrollView scrollEventThrottle={props.scrollEventThrottle ?? 500} className="h-full" {...props} />
+    <RNScrollView scrollEventThrottle={props.scrollEventThrottle ?? 500} {...props} />
   ) : (
     props.children
   )

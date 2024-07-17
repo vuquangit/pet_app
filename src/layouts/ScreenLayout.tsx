@@ -1,7 +1,8 @@
 import React, {FC} from 'react'
-import {RefreshControlProps} from 'react-native'
+import {RefreshControlProps, KeyboardAvoidingView} from 'react-native'
 import {SafeAreaView} from './SafeAreaView'
 import {ScrollView} from './ScrollView'
+import {Edges} from 'react-native-safe-area-context'
 
 type PropsType = {
   children: React.ReactNode
@@ -9,6 +10,7 @@ type PropsType = {
   isSafeAreaView?: boolean
   isScrollView?: boolean
   onRefresh?: React.ReactElement<RefreshControlProps>
+  edges?: Edges
 }
 
 export const ScreenLayout: FC<PropsType> = ({
@@ -16,13 +18,16 @@ export const ScreenLayout: FC<PropsType> = ({
   isSafeAreaView = true,
   isScrollView = true,
   onRefresh,
+  edges = ['right', 'top', 'left', 'bottom'],
   // ...props
 }) => {
   return (
-    <SafeAreaView isSafeAreaView={isSafeAreaView}>
-      <ScrollView isScrollView={isScrollView} refreshControl={onRefresh} className="">
-        {children}
-      </ScrollView>
-    </SafeAreaView>
+    <KeyboardAvoidingView>
+      <SafeAreaView isSafeAreaView={isSafeAreaView} edges={edges}>
+        <ScrollView isScrollView={isScrollView} refreshControl={onRefresh}>
+          {children}
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
