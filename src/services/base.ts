@@ -130,7 +130,8 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
 
     // notification if errorCode is not in skip list
     if (!errorCodeSkipList.includes(errorCode)) {
-      const messageVal = get(ERROR_MESSAGE, errorCode) || 'Something went wrong'
+      const messageVal =
+        get(ERROR_MESSAGE, errorCode) || get(error, 'message[0]') || 'Something went wrong'
 
       Snackbar.show({
         text: messageVal,

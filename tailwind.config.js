@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#0070f3',
+        spinner: 'rgba(0, 0, 0, 0.75)',
       },
     },
   },

@@ -6,9 +6,11 @@ interface BaseButtonProps extends ButtonProps {
   title: string
   variant?: 'default' | 'primary' | 'secondary'
   className?: string
+  children?: React.ReactNode
 }
 
 export const ButtonField: FC<BaseButtonProps> = ({
+  children,
   title,
   variant = 'default',
   className,
@@ -30,7 +32,8 @@ export const ButtonField: FC<BaseButtonProps> = ({
 
   return (
     <Pressable className={baseStyles} {...props}>
-      <Text className={textStyles}>{title}</Text>
+      {title && <Text className={textStyles}>{title}</Text>}
+      {children}
     </Pressable>
   )
 }

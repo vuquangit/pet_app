@@ -108,9 +108,7 @@ export const InputField: FC<BaseInputProps> = ({
         ) : null}
       </View>
 
-      {error ? (
-        <Text className="self-center pt-2 text-base font-light text-red-600">{error}</Text>
-      ) : null}
+      {error ? <Text className="pt-1 text-base font-light text-red-600 ">{error}</Text> : null}
     </View>
   )
 }

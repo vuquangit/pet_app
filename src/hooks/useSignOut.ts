@@ -1,30 +1,32 @@
-import {useState} from 'react';
-import {deviceStorage} from '../store/storage';
-import storageKeys from '../constants/storage-keys';
-import {useAppDispatch} from '../store/hook';
-import {resetCredentials} from '../store/auth';
+import {useState} from 'react'
+import {deviceStorage} from 'src/store/storage'
+import storageKeys from 'src/constants/storage-keys'
+import {useAppDispatch} from 'src/store/hook'
+import {resetCredentials} from 'src/store/auth'
+import {setLaunching} from 'src/store/launching'
 
 export const useSignOut = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const dispatch = useAppDispatch();
+  const [isSuccess, setIsSuccess] = useState(false)
+  const dispatch = useAppDispatch()
 
   const signOut = async () => {
-    setIsLoading(true);
+    try {
+      dispatch(setLaunching({isLaunching: true}))
 
-    await Promise.all([
-      deviceStorage.deleteItem(storageKeys.access_token),
-      deviceStorage.deleteItem(storageKeys.refresh_token),
-    ]);
-    dispatch(resetCredentials());
+      await Promise.all([
+        deviceStorage.deleteItem(storageKeys.access_token),
+        deviceStorage.deleteItem(storageKeys.refresh_token),
+      ])
+      dispatch(resetCredentials())
 
-    setIsLoading(false);
-    setIsSuccess(true);
-  };
+      setIsSuccess(true)
+    } finally {
+      dispatch(setLaunching({isLaunching: false}))
+    }
+  }
 
   return {
-    isLoading,
     isSuccess,
     signOut,
-  };
-};
+  }
+}

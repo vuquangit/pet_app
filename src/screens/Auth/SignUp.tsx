@@ -1,27 +1,24 @@
-import React, {FC, useState} from 'react'
+import React, {FC} from 'react'
 import {Text, View} from 'react-native'
-import Config from 'react-native-config'
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faGoogle} from '@fortawesome/free-brands-svg-icons/faGoogle'
 
-import {useSignIn} from 'src/hooks/useSignIn'
+import {useSignUp} from 'src/hooks/useSignUp'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
-import {InputField, ButtonField, CheckBoxField} from 'src/components/Form'
-import {Divider} from 'src/components/Divider'
+import {InputField, ButtonField} from 'src/components/Form'
 import {Link} from 'src/components/Link'
 
 type FormValues = {
   email: string
   password: string
+  confirmPassword: string
+  name: string
 }
 
-export const SignInScreen: FC = () => {
-  const {isLoading, onSubmit} = useSignIn()
-  const [isRemember, setIsRemember] = useState<boolean>(false)
+export const SignUpScreen: FC = () => {
+  const {isLoading, onSubmit} = useSignUp()
 
   const {...methods} = useForm({
-    defaultValues: {email: Config?.FAKE_EMAIL || '', password: Config?.FAKE_PASSWORD || ''},
+    defaultValues: {email: '', name: '', password: '', confirmPassword: ''},
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
@@ -39,15 +36,6 @@ export const SignInScreen: FC = () => {
         <View className="flex flex-col items-center justify-center w-full h-full px-4 py-2">
           <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px]">Pet Island</Text>
 
-          <ButtonField title="" variant="secondary" className="w-full mb-8">
-            <View className="flex flex-row items-center justify-center">
-              <FontAwesomeIcon icon={faGoogle} color="#4b5563" size={20} />
-              <Text className="mx-2 text-sm text-green-600">Sign In With Google</Text>
-            </View>
-          </ButtonField>
-
-          <Divider classNameWrapper="mb-8">OR</Divider>
-
           <InputField
             name="email"
             type="email"
@@ -56,7 +44,17 @@ export const SignInScreen: FC = () => {
             classNameWrapper="mb-6"
             error={methods.formState.errors.email?.message}
             rules={{required: 'Email is required'}}
-            onSubmitEditing={() => methods.setFocus('password')}
+            onSubmitEditing={() => methods.setFocus('name')}
+          />
+
+          <InputField
+            name="name"
+            type="name"
+            label="Your name"
+            placeholder="Your name"
+            classNameWrapper="mb-6"
+            error={methods.formState.errors.password?.message}
+            onSubmitEditing={() => methods.setFocus('name')}
           />
 
           <InputField
@@ -64,19 +62,25 @@ export const SignInScreen: FC = () => {
             type="password"
             label="Password"
             placeholder="Password"
-            classNameWrapper="mb-2"
+            classNameWrapper="mb-8"
+            rules={{required: 'Password is required'}}
+            error={methods.formState.errors.password?.message}
+            onSubmitEditing={() => methods.setFocus('confirmPassword')}
+          />
+
+          <InputField
+            name="confirmPassword"
+            type="password"
+            label="Confirm password"
+            placeholder="Confirm password"
+            classNameWrapper="mb-8"
             rules={{required: 'Password is required'}}
             error={methods.formState.errors.password?.message}
             onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
           />
 
-          <View className="flex flex-row items-center justify-between w-full mb-8">
-            <CheckBoxField label="Remember me" value={isRemember} onValueChange={setIsRemember} />
-            <Link to={{screen: 'ForgotPassword'}}>Forgot Password?</Link>
-          </View>
-
           <ButtonField
-            title="Sign in"
+            title="Sign up"
             variant="primary"
             className="mb-4"
             disabled={isLoading}
@@ -85,9 +89,9 @@ export const SignInScreen: FC = () => {
 
           <View className="flex flex-row items-center justify-center">
             <Text className="mr-1 text-sm font-light text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?
+              Do you already have an account?
             </Text>
-            <Link to={{screen: 'SignUp'}}>Sign up</Link>
+            <Link to={{screen: 'SignIn'}}>Sign in</Link>
           </View>
         </View>
       </FormProvider>

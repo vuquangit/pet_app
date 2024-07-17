@@ -1,6 +1,7 @@
 import React, {FC} from 'react'
-import {SplashScreen} from 'src/screens/SplashScreen'
+
 import {useAppSelector} from 'src/store/hook'
+import Spinner from 'src/components/Spinner'
 
 type PropsType = {
   children: React.ReactNode
@@ -8,5 +9,15 @@ type PropsType = {
 
 export const AuthContainer: FC<PropsType> = ({children}) => {
   const isLaunching = useAppSelector(state => state.launching.isLaunching)
-  return isLaunching ? <SplashScreen /> : children
+
+  return (
+    <>
+      <Spinner
+        visible={isLaunching}
+        textContent={'Loading...'}
+        textStyle="text-white text-[24px]"
+      />
+      {children}
+    </>
+  )
 }
