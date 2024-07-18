@@ -6,6 +6,7 @@ import {useSignUp} from 'src/hooks/useSignUp'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
 import {InputField, ButtonField} from 'src/components/Form'
 import {Link} from 'src/components/Link'
+import {PATTERN_EMAIL} from 'src/constants/patterns'
 
 type FormValues = {
   email: string
@@ -31,26 +32,35 @@ export const SignUpScreen: FC = () => {
   }
 
   return (
-    <ScreenLayout isSafeAreaView={true} isScrollView={false} edges={['right', 'left']}>
+    <ScreenLayout isSafeAreaView={true} isScrollView={true} edges={['right', 'left']}>
       <FormProvider {...methods}>
-        <View className="flex flex-col items-center justify-center w-full h-full px-4 py-2">
-          <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px]">Pet Island</Text>
+        <View className="flex flex-col items-center justify-start w-full h-full px-4 py-2">
+          <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px] mt-[50px]">
+            Pet Island
+          </Text>
 
           <InputField
             name="email"
             type="email"
             label="Email"
-            placeholder="Email"
+            placeholder="Your email"
             classNameWrapper="mb-6"
+            autoCapitalize="none"
             error={methods.formState.errors.email?.message}
-            rules={{required: 'Email is required'}}
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: PATTERN_EMAIL,
+                message: 'Invalid email address',
+              },
+            }}
             onSubmitEditing={() => methods.setFocus('name')}
           />
 
           <InputField
             name="name"
             type="name"
-            label="Your name"
+            label="Name"
             placeholder="Your name"
             classNameWrapper="mb-6"
             error={methods.formState.errors.password?.message}
@@ -74,8 +84,15 @@ export const SignUpScreen: FC = () => {
             label="Confirm password"
             placeholder="Confirm password"
             classNameWrapper="mb-8"
-            rules={{required: 'Password is required'}}
-            error={methods.formState.errors.password?.message}
+            rules={{
+              required: 'Confirm password is required',
+              validate: (val: string) => {
+                if (methods.watch('password') !== val) {
+                  return 'Your passwords do no match'
+                }
+              },
+            }}
+            error={methods.formState.errors.confirmPassword?.message}
             onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
           />
 

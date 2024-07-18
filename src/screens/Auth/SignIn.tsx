@@ -10,6 +10,7 @@ import {ScreenLayout} from 'src/layouts/ScreenLayout'
 import {InputField, ButtonField, CheckBoxField} from 'src/components/Form'
 import {Divider} from 'src/components/Divider'
 import {Link} from 'src/components/Link'
+import {PATTERN_EMAIL} from 'src/constants/patterns'
 
 type FormValues = {
   email: string
@@ -37,7 +38,9 @@ export const SignInScreen: FC = () => {
     <ScreenLayout isSafeAreaView={true} isScrollView={false} edges={['right', 'left']}>
       <FormProvider {...methods}>
         <View className="flex flex-col items-center justify-center w-full h-full px-4 py-2">
-          <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px]">Pet Island</Text>
+          <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px] -mt-[100px]">
+            Pet Island
+          </Text>
 
           <ButtonField title="" variant="secondary" className="w-full mb-8">
             <View className="flex flex-row items-center justify-center">
@@ -55,7 +58,13 @@ export const SignInScreen: FC = () => {
             placeholder="Email"
             classNameWrapper="mb-6"
             error={methods.formState.errors.email?.message}
-            rules={{required: 'Email is required'}}
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: PATTERN_EMAIL,
+                message: 'Invalid email address',
+              },
+            }}
             onSubmitEditing={() => methods.setFocus('password')}
           />
 

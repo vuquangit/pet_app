@@ -13,7 +13,14 @@ export const AuthStack: FC = () => {
   const {isLoggedIn} = useAuth()
 
   return (
-    <Auth.Navigator initialRouteName="SignIn" screenOptions={{headerShown: false}}>
+    <Auth.Navigator
+      initialRouteName="SignIn"
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: '#FFFFFF',
+        },
+      }}>
       <Auth.Screen
         name="SignIn"
         component={SignInScreen}

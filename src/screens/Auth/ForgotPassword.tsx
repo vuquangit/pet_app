@@ -6,6 +6,7 @@ import {useForgotPassword} from 'src/hooks/useForgotPassword'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
 import {InputField, ButtonField} from 'src/components/Form'
 import {Link} from 'src/components/Link'
+import {PATTERN_EMAIL} from 'src/constants/patterns'
 
 type FormValues = {
   email: string
@@ -30,8 +31,8 @@ export const ForgotPasswordScreen: FC = () => {
   return (
     <ScreenLayout isSafeAreaView={true} isScrollView={false} edges={['right', 'left']}>
       <FormProvider {...methods}>
-        <View className="flex flex-col items-center justify-center w-full h-full px-4 py-2">
-          <Text className="text-3xl font-bold text-center text-gray-800 mb-[50px]">Pet Island</Text>
+        <View className="flex flex-col items-center justify-start w-full h-full px-4 py-2">
+          <Text className="text-3xl font-bold text-center text-gray-800 my-[50px]">Pet Island</Text>
 
           <InputField
             name="email"
@@ -39,8 +40,15 @@ export const ForgotPasswordScreen: FC = () => {
             label="Email"
             placeholder="Email"
             classNameWrapper="mb-6"
+            autoCapitalize="none"
             error={methods.formState.errors.email?.message}
-            rules={{required: 'Email is required'}}
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: PATTERN_EMAIL,
+                message: 'Invalid email address',
+              },
+            }}
             onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
           />
 
