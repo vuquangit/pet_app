@@ -4,6 +4,7 @@ import {useLoginMutation} from 'src/services/auth'
 import {useAppDispatch} from 'src/store/hook'
 import {setLaunching} from 'src/store/launching'
 import useProfile from './useProfile'
+import {IAuthRequest} from 'src/interfaces'
 
 export const useSignIn = () => {
   const dispatch = useAppDispatch()
@@ -12,7 +13,7 @@ export const useSignIn = () => {
   const [login, {isLoading, error}] = useLoginMutation()
   const {fetchProfile} = useProfile()
 
-  const onSubmit = async ({email, password}: any) => {
+  const onSubmit = async ({email, password}: IAuthRequest) => {
     // Sign in and redirect to the proper destination if successful.
     try {
       dispatch(setLaunching({isLaunching: true}))

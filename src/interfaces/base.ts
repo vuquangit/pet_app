@@ -1,16 +1,16 @@
 export type ErrorResponse = {
-  status?: string;
-  title?: string;
-  data?: {[key in string]: Array<string>};
-};
+  status?: string
+  title?: string
+  data?: {[key in string]: Array<string>}
+}
 
-export type ErrorsResponse = {errors?: Array<ErrorResponse>} & ErrorResponse;
+export type ErrorsResponse = {errors?: Array<ErrorResponse>} & ErrorResponse
 
 export interface IBaseResponse<T = any> {
-  status?: number;
-  success?: boolean;
+  status?: number
+  success?: boolean
   result?: {
-    data?: T; // FIXME: wrong ?
-  };
-  error?: any;
+    data?: T
+  }
+  error?: any
 }

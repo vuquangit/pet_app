@@ -7,6 +7,7 @@ interface BaseButtonProps extends ButtonProps {
   variant?: 'default' | 'primary' | 'secondary'
   className?: string
   children?: React.ReactNode
+  disabled?: boolean
 }
 
 export const ButtonField: FC<BaseButtonProps> = ({
@@ -14,13 +15,17 @@ export const ButtonField: FC<BaseButtonProps> = ({
   title,
   variant = 'default',
   className,
+  disabled,
   ...props
 }) => {
   const baseStyles = classNames(
-    'w-full text-white bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800',
+    'w-full text-white bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center',
+    'focus:ring-4 focus:outline-none focus:ring-primary-300',
+    'dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800',
     {
       'bg-blue-600 hover:bg-blue-700': variant === 'primary',
       'bg-white': variant === 'secondary',
+      'bg-gray-200 cursor-not-allowed': disabled,
     },
     className,
   )

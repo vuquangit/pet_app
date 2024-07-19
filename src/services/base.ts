@@ -6,12 +6,11 @@ import {camelizeKeys, decamelizeKeys} from 'humps'
 import {get, isEmpty} from 'lodash'
 import Config from 'react-native-config'
 
-import ERROR_MESSAGE from '../constants/error-message'
-import {IBaseResponse} from '../interfaces/base'
-import {resetCredentials} from '../store/auth'
-
-import {deviceStorage} from '../store/storage'
-import storageKeys from '../constants/storage-keys'
+import ERROR_MESSAGE from 'src/constants/error-message'
+import {IBaseResponse} from 'src/interfaces/base'
+import {resetCredentials} from 'src/store/auth'
+import {deviceStorage} from 'src/store/storage'
+import storageKeys from 'src/constants/storage-keys'
 
 const isDevelopment = Config.NODE_ENV === 'development'
 
@@ -93,6 +92,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
 const handleNotification = (api: BaseQueryApi, result: any) => {
   const errorStatus = result.error.status
   const error = result?.error?.data?.error
+  console.log('Error::', error)
   let message = ''
   let navigateTo = ''
 

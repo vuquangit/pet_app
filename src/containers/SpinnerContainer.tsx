@@ -7,14 +7,14 @@ type PropsType = {
   children: React.ReactNode
 }
 
-export const AuthContainer: FC<PropsType> = ({children}) => {
+export const SpinnerContainer: FC<PropsType> = ({children}) => {
   const isLaunching = useAppSelector(state => state.launching.isLaunching)
 
   return (
     <>
       <Spinner
         visible={isLaunching}
-        textContent={'Loading...'}
+        // textContent={'Loading...'}
         textStyle="text-white text-[24px]"
       />
       {children}

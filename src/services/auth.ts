@@ -1,5 +1,11 @@
 // Need to use the React-specific entry point to import createApi
-import {IAuthMe, IAuthRequest, IAuthResetPasswordRequest, IAuthResponse} from '../interfaces/auth'
+import {
+  IAuthMe,
+  IAuthRequest,
+  IAuthResetPasswordRequest,
+  IAuthResponse,
+  IRegisterRequest,
+} from '../interfaces/auth'
 import {IBaseResponse} from '../interfaces/base'
 import {customBaseQuery} from '../services/base'
 import {createApi} from '@reduxjs/toolkit/query/react'
@@ -19,10 +25,9 @@ export const authApi = createApi({
       }),
     }),
 
-    // TODO: update types
-    signup: builder.mutation<IBaseResponse<any>, any>({
+    signup: builder.mutation<IBaseResponse<IAuthMe>, IRegisterRequest>({
       query: body => ({
-        url: '/auth/signup',
+        url: '/auth/register',
         method: 'POST',
         body: body,
       }),

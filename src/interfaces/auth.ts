@@ -22,3 +22,9 @@ export interface IAuthResetPasswordRequest {
   token: string
   new_password: string
 }
+
+export interface IRegisterRequest {
+  email: string
+  password: string
+  name: string
+}

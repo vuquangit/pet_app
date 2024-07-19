@@ -1,9 +1,11 @@
-import React, {FC, useState} from 'react'
-import {Text, View} from 'react-native'
+import React, {FC, useEffect, useState} from 'react'
+import {Text, View, Keyboard} from 'react-native'
 import Config from 'react-native-config'
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faGoogle} from '@fortawesome/free-brands-svg-icons/faGoogle'
+import {useRoute} from '@react-navigation/native'
+import {get} from 'lodash'
 
 import {useSignIn} from 'src/hooks/useSignIn'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
@@ -11,6 +13,7 @@ import {InputField, ButtonField, CheckBoxField} from 'src/components/Form'
 import {Divider} from 'src/components/Divider'
 import {Link} from 'src/components/Link'
 import {PATTERN_EMAIL} from 'src/constants/patterns'
+import ERROR_MESSAGE from 'src/constants/error-message'
 
 type FormValues = {
   email: string
@@ -18,21 +21,47 @@ type FormValues = {
 }
 
 export const SignInScreen: FC = () => {
-  const {isLoading, onSubmit} = useSignIn()
+  const {isLoading, error, onSubmit} = useSignIn()
   const [isRemember, setIsRemember] = useState<boolean>(false)
+  const route = useRoute()
 
   const {...methods} = useForm({
-    defaultValues: {email: Config?.FAKE_EMAIL || '', password: Config?.FAKE_PASSWORD || ''},
+    defaultValues: {
+      email: Config?.FAKE_EMAIL || '',
+      password: Config?.FAKE_PASSWORD || '',
+    },
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log('handleSubmit', data)
+    Keyboard.dismiss()
     onSubmit(data)
   }
 
   const onError: SubmitErrorHandler<FormValues> = errors => {
     return console.log(errors)
   }
+
+  const getFieldError = (field: keyof FormValues, errorCodeList: string[]): string => {
+    const errorCode: string = get(error, 'data.error.code', '')
+    const errorMessage: string =
+      methods.formState.errors?.[field]?.message || errorCodeList.includes(errorCode)
+        ? get(ERROR_MESSAGE, errorCode)
+        : ''
+
+    return errorMessage
+  }
+
+  useEffect(() => {
+    const email = get(route, 'params.email', '')
+    const password = get(route, 'params.password', '')
+
+    if (email) {
+      methods.setValue('email', email)
+      methods.setValue('password', password)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params])
 
   return (
     <ScreenLayout isSafeAreaView={true} isScrollView={false} edges={['right', 'left']}>
@@ -57,7 +86,7 @@ export const SignInScreen: FC = () => {
             label="Email"
             placeholder="Email"
             classNameWrapper="mb-6"
-            error={methods.formState.errors.email?.message}
+            error={getFieldError('email', ['USER.EMAIL_NOT_FOUND'])}
             rules={{
               required: 'Email is required',
               pattern: {
@@ -75,7 +104,7 @@ export const SignInScreen: FC = () => {
             placeholder="Password"
             classNameWrapper="mb-2"
             rules={{required: 'Password is required'}}
-            error={methods.formState.errors.password?.message}
+            error={getFieldError('password', ['USER.WRONG_PASSWORD'])}
             onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
           />
 
@@ -89,7 +118,7 @@ export const SignInScreen: FC = () => {
             variant="primary"
             className="mb-4"
             disabled={isLoading}
-            onPress={methods.handleSubmit(onSubmit, onError)}
+            onPress={methods.handleSubmit(handleSubmit, onError)}
           />
 
           <View className="flex flex-row items-center justify-center">

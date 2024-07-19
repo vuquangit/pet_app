@@ -1,6 +1,8 @@
 import React, {FC} from 'react'
-import {Text, View} from 'react-native'
+import {Text, View, Keyboard} from 'react-native'
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faHouse} from '@fortawesome/free-solid-svg-icons/faHouse'
 
 import {useForgotPassword} from 'src/hooks/useForgotPassword'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
@@ -13,14 +15,14 @@ type FormValues = {
 }
 
 export const ForgotPasswordScreen: FC = () => {
-  const {isLoading, onSubmit} = useForgotPassword()
+  const {isLoading, isSuccess, onSubmit} = useForgotPassword()
 
   const {...methods} = useForm({
     defaultValues: {email: ''},
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log('handleSubmit', data)
+    Keyboard.dismiss()
     onSubmit(data.email)
   }
 
@@ -34,35 +36,60 @@ export const ForgotPasswordScreen: FC = () => {
         <View className="flex flex-col items-center justify-start w-full h-full px-4 py-2">
           <Text className="text-3xl font-bold text-center text-gray-800 my-[50px]">Pet Island</Text>
 
-          <InputField
-            name="email"
-            type="email"
-            label="Email"
-            placeholder="Email"
-            classNameWrapper="mb-6"
-            autoCapitalize="none"
-            error={methods.formState.errors.email?.message}
-            rules={{
-              required: 'Email is required',
-              pattern: {
-                value: PATTERN_EMAIL,
-                message: 'Invalid email address',
-              },
-            }}
-            onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
-          />
+          {!isSuccess ? (
+            <>
+              <Text className="leading-5">Please enter your registered email address.</Text>
+              <Text className="mb-6 leading-5">
+                We will send you a URL link to reset your password
+              </Text>
 
-          <ButtonField
-            title="Submit"
-            variant="primary"
-            className="mb-4"
-            disabled={isLoading}
-            onPress={methods.handleSubmit(onSubmit, onError)}
-          />
+              <InputField
+                name="email"
+                type="email"
+                label="Email address"
+                placeholder="Enter your email address"
+                classNameWrapper="mb-6"
+                autoCapitalize="none"
+                error={methods.formState.errors.email?.message}
+                rules={{
+                  required: 'Email is required',
+                  pattern: {
+                    value: PATTERN_EMAIL,
+                    message: 'Invalid email address',
+                  },
+                }}
+                onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
+              />
 
-          <View className="flex flex-row items-center justify-center">
-            <Link to={{screen: 'SignIn'}}>Back to Sign in</Link>
-          </View>
+              <ButtonField
+                title="Reset email sent to you"
+                variant="primary"
+                className="mb-4"
+                disabled={isLoading || !methods.watch('email')}
+                onPress={methods.handleSubmit(handleSubmit, onError)}
+              />
+            </>
+          ) : (
+            <View className="py-4">
+              <Text className="text-base leading-5 text-green-600">
+                Reset password has been sent to: {methods.getValues('email')}
+              </Text>
+              <Text className="text-base leading-5 text-green-600">
+                Please access the URL in the body of the email to compete te password change.
+              </Text>
+              <Text className="text-base leading-5 text-green-600">
+                If you do not receive the email after 30 minutes, please check the email address you
+                entered, as it may be incorrect or in your spam folder.
+              </Text>
+            </View>
+          )}
+
+          <Link to={{screen: 'SignIn'}}>
+            <View className="flex flex-row items-center gap-1.5">
+              <FontAwesomeIcon icon={faHouse} color="#4b5563" size={20} />
+              <Text className="text-base font-medium text-blue-600">Return to Sign In</Text>
+            </View>
+          </Link>
         </View>
       </FormProvider>
     </ScreenLayout>

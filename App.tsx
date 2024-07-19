@@ -8,7 +8,7 @@ import RNSplashScreen from 'react-native-splash-screen'
 import {setupStore} from 'src/store'
 import {Navigation} from 'src/Navigation'
 import {VersionCheckContainer} from 'src/containers/VersionCheckContainer'
-import {AuthContainer} from 'src/containers/AuthContainer'
+import {SpinnerContainer} from 'src/containers/SpinnerContainer'
 
 const App: FC = () => {
   const store = setupStore()
@@ -21,11 +21,11 @@ const App: FC = () => {
     <SafeAreaProvider>
       <Provider store={store}>
         <StatusBar barStyle="light-content" />
-        <AuthContainer>
+        <SpinnerContainer>
           <VersionCheckContainer>
             <Navigation />
           </VersionCheckContainer>
-        </AuthContainer>
+        </SpinnerContainer>
       </Provider>
     </SafeAreaProvider>
   )
