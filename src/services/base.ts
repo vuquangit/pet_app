@@ -11,15 +11,10 @@ import {IBaseResponse} from 'src/interfaces/base'
 import {resetCredentials} from 'src/store/auth'
 import {deviceStorage} from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
+import {store} from 'src/store'
 
 const isDevelopment = Config.NODE_ENV === 'development'
-
-const errorCodeSkipList = [
-  // 'unauthenticated', // TODO: check login message
-  'account_locked', // blocked login
-  'auth.reset_password_token.invalid', // invalid token for reset password
-  'invalid_email_reset_token', // verify email change
-]
+const errorCodeSkipList: string[] = []
 
 export const transformResponse = (response: IBaseResponse) => {
   const {success} = response
@@ -32,8 +27,14 @@ export const transformResponse = (response: IBaseResponse) => {
 export const baseQuery = fetchBaseQuery({
   baseUrl: Config.API_URL,
   prepareHeaders: async headers => {
-    const {value: accessToken} = await deviceStorage.getItem(storageKeys.access_token)
+    // get access token from store
+    const state = store.getState()
+    const accessTokenStore = get(state, 'tokens.accessToken', '')
 
+    // get access token from storage
+    const {value: accessTokenLocal} = await deviceStorage.getItem(storageKeys.access_token)
+
+    const accessToken = accessTokenLocal || accessTokenStore
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`)
     }

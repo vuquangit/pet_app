@@ -4,6 +4,7 @@ import storageKeys from 'src/constants/storage-keys'
 import {useAppDispatch} from 'src/store/hook'
 import {resetCredentials} from 'src/store/auth'
 import {setLaunching} from 'src/store/launching'
+import {resetTokens} from 'src/store/tokens'
 
 export const useSignOut = () => {
   const [isSuccess, setIsSuccess] = useState(false)
@@ -18,6 +19,7 @@ export const useSignOut = () => {
         deviceStorage.deleteItem(storageKeys.refresh_token),
       ])
       dispatch(resetCredentials())
+      dispatch(resetTokens())
 
       setIsSuccess(true)
     } finally {

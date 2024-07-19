@@ -23,6 +23,7 @@ const Tab = createBottomTabNavigator()
 export const Navigation: FC = () => {
   const {isLoggedIn} = useAuth()
   const user = useAppSelector(selectCurrentUser)
+  const tokens = useAppSelector(state => state.tokens)
   const {fetchProfile} = useProfile()
 
   // get profile
@@ -30,7 +31,7 @@ export const Navigation: FC = () => {
     ;(async () => {
       const {value: accessToken} = await deviceStorage.getItem(storageKeys.access_token)
 
-      if (accessToken && !user?.email) {
+      if ((accessToken || tokens.accessToken) && !user?.email) {
         await fetchProfile()
       }
     })()

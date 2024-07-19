@@ -4,6 +4,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
+<br>
+
 ## Requirement
 - Ruby: 3.0.3
 - Cocapod: 1.14.3 (1.15.2 ?)
@@ -30,6 +32,15 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 ## Run instructions for macOS:
    • See https://aka.ms/ReactNativeGuideMacOS for the latest up-to-date instructions.
 
+## Debugger
+https://github.com/jhen0409/react-native-debugger
+
+MacOS: `brew update && brew install --cask react-native-debugger`
+<br><br>
+Start debugger: `open "rndebugger://set-debugger-loc?host=localhost&port=8081"`
+
+<br>
+<br>
 
 ## Step 1: Start the Metro Server
 

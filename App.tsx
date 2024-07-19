@@ -5,16 +5,17 @@ import {Provider} from 'react-redux'
 import {StatusBar} from 'react-native'
 import RNSplashScreen from 'react-native-splash-screen'
 
-import {setupStore} from 'src/store'
+import {store} from 'src/store'
 import {Navigation} from 'src/Navigation'
 import {VersionCheckContainer} from 'src/containers/VersionCheckContainer'
 import {SpinnerContainer} from 'src/containers/SpinnerContainer'
+import {enableDebugging} from 'src/helper/debuger'
 
 const App: FC = () => {
-  const store = setupStore()
-
   useEffect(() => {
     RNSplashScreen.hide()
+    enableDebugging()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

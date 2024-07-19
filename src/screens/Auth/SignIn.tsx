@@ -22,7 +22,7 @@ type FormValues = {
 
 export const SignInScreen: FC = () => {
   const {isLoading, error, onSubmit} = useSignIn()
-  const [isRemember, setIsRemember] = useState<boolean>(false)
+  const [isRemember, setIsRemember] = useState<boolean>(true)
   const route = useRoute()
 
   const {...methods} = useForm({
@@ -35,7 +35,7 @@ export const SignInScreen: FC = () => {
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log('handleSubmit', data)
     Keyboard.dismiss()
-    onSubmit(data)
+    onSubmit(data, isRemember)
   }
 
   const onError: SubmitErrorHandler<FormValues> = errors => {
