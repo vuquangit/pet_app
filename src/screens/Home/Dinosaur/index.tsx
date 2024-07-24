@@ -48,31 +48,31 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
   // 资源文件
   let skyImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/cloud.png'),
+    src: require('../../../assets/images/dinosaur/cloud.png'),
   })
   let groundImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/ground.png'),
+    src: require('../../../assets/images/dinosaur/ground.png'),
   })
   let playerImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/dinosaur.png'),
+    src: require('../../../assets/images/dinosaur/dinosaur.png'),
   })
   let playerLeftImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/dinosaur_left.png'),
+    src: require('../../../assets/images/dinosaur/dinosaur_left.png'),
   })
   let playerRightImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/dinosaur_right.png'),
+    src: require('../../../assets/images/dinosaur/dinosaur_right.png'),
   })
   let playerDieImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/dinosaur_die.png'),
+    src: require('../../../assets/images/dinosaur/dinosaur_die.png'),
   })
   let obstacleImage = new Image({
     onLoad: onImageLoaded,
-    src: require('../../assets/images/dinosaur/obstacle.png'),
+    src: require('../../../assets/images/dinosaur/obstacle.png'),
   })
 
   let options = {
@@ -305,10 +305,10 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
   }
 
   useEffect(() => {
-    if (dimensions.window.width >= 680) {
-      // @ts-ignore
-      canvasEl?.current?.width = 680
-    }
+    // if (dimensions.window.width >= 680) {
+    //   // @ts-ignore
+    //   canvasEl?.current?.width = 680
+    // }
 
     // window.onkeypress = function (e) {
     //   if (e.key === ' ') {
