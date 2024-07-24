@@ -1,10 +1,12 @@
 import React, {useEffect, useRef} from 'react'
-import {Image, TouchableOpacity} from 'react-native'
-import Canvas from 'react-native-canvas'
+import {TouchableOpacity, View} from 'react-native'
+import Canvas, {Image as CanvasImage} from 'react-native-canvas'
 
 import {deviceStorage} from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
-import { useDimensions } from 'src/hooks/useDimensions'
+import {useDimensions} from 'src/hooks/useDimensions'
+
+import {ScreenLayout} from 'src/layouts/ScreenLayout'
 
 const STATUS = {
   STOP: 'STOP',
@@ -16,19 +18,30 @@ const STATUS = {
 const JUMP_DELTA = 5
 const JUMP_MAX_HEIGHT = 53
 
-type DinosaurTypes = {
-  options: any
+type OptionsType = {
+  obstacleImage: CanvasImage | null
+  playerImage: CanvasImage[] | null
+  groundImage: CanvasImage | null
+  skyImage: CanvasImage | null
+  fps: number
+  skySpeed: number
+  groundSpeed: number
+  skyOffset: number
+  groundOffset: number
 }
 
-const Dinosaur: React.FC<DinosaurTypes> = props => {
-  const canvasEl = useRef()
-  const { dimensions } = useDimensions()
+const Dinosaur: React.FC = () => {
+  const canvasEl = useRef<Canvas | null>()
+  const {dimensions} = useDimensions()
 
   let imageLoadCount = 0
   let onImageLoaded = () => {
     ++imageLoadCount
-    if (imageLoadCount === 3) {
-      draw()
+    if (imageLoadCount === 7) {
+      setTimeout(() => {
+        console.log('obstacleImage:', options?.obstacleImage)
+        draw()
+      }, 0)
     }
   }
 
@@ -45,48 +58,17 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     return res
   }
 
-  // 资源文件
-  let skyImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/cloud.png'),
-  })
-  let groundImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/ground.png'),
-  })
-  let playerImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/dinosaur.png'),
-  })
-  let playerLeftImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/dinosaur_left.png'),
-  })
-  let playerRightImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/dinosaur_right.png'),
-  })
-  let playerDieImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/dinosaur_die.png'),
-  })
-  let obstacleImage = new Image({
-    onLoad: onImageLoaded,
-    src: require('../../../assets/images/dinosaur/obstacle.png'),
-  })
-
-  let options = {
-    fps: 60,
-    skySpeed: 40,
-    groundSpeed: 100,
-    skyImage: skyImage,
-    groundImage: groundImage,
-    playerImage: [playerImage, playerLeftImage, playerRightImage, playerDieImage],
-    obstacleImage: obstacleImage,
+  const [options, setOptions] = React.useState<OptionsType>({
+    obstacleImage: null,
+    playerImage: [],
+    groundImage: null,
+    skyImage: null,
+    fps: 0,
+    skySpeed: 0,
+    groundSpeed: 0,
     skyOffset: 0,
     groundOffset: 0,
-    ...props.options,
-  }
+  })
 
   let status = STATUS.STOP
   let timer: any = null
@@ -100,22 +82,97 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
   let playerStatus = 0
 
   useEffect(() => {
+    if (!canvasEl.current) {
+      return
+    }
+
+    const skyImage = new CanvasImage(canvasEl.current)
+    const groundImage = new CanvasImage(canvasEl.current)
+    const playerImage = new CanvasImage(canvasEl.current)
+    const playerLeftImage = new CanvasImage(canvasEl.current)
+    const playerRightImage = new CanvasImage(canvasEl.current)
+    const playerDieImage = new CanvasImage(canvasEl.current)
+    const obstacleImage = new CanvasImage(canvasEl.current)
+
+    // skyImage.src = require('../../../assets/images/dinosaur/cloud.png')
+    skyImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/cloud.png'
+    skyImage.addEventListener('load', onImageLoaded)
+
+    // groundImage.src = require('../../../assets/images/dinosaur/ground.png')
+    groundImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/ground.png'
+    groundImage.addEventListener('load', onImageLoaded)
+
+    // playerImage.src = require('../../../assets/images/dinosaur/dinosaur.png')
+    playerImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur.png'
+    playerImage.addEventListener('load', onImageLoaded)
+
+    // playerLeftImage.src = require('../../../assets/images/dinosaur/dinosaur_left.png')
+    playerLeftImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_left.png'
+    playerLeftImage.addEventListener('load', onImageLoaded)
+
+    // playerRightImage.src = require('../../../assets/images/dinosaur/dinosaur_right.png')
+    playerRightImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_right.png'
+    playerRightImage.addEventListener('load', onImageLoaded)
+
+    // playerDieImage.src = require('../../../assets/images/dinosaur/dinosaur_die.png')
+    playerDieImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_die.png'
+    playerDieImage.addEventListener('load', onImageLoaded)
+
+    // obstacleImage.src = require('../../../assets/images/dinosaur/obstacle.png')
+    obstacleImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/obstacle.png'
+    obstacleImage.addEventListener('load', onImageLoaded)
+
+    setOptions({
+      fps: 60,
+      skySpeed: 40,
+      groundSpeed: 100,
+      skyImage: skyImage,
+      groundImage: groundImage,
+      playerImage: [playerImage, playerLeftImage, playerRightImage, playerDieImage],
+      obstacleImage: obstacleImage,
+      skyOffset: 0,
+      groundOffset: 0,
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasEl])
+
+  useEffect(() => {
+    // eslint-disable-next-line no-extra-semi
     ;(async () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       highScore = Number((await deviceStorage.getItem(storageKeys.dinosaur_high_score)).value || 0)
     })()
   }, [])
 
-  const handleCanvas = (canvas: any) => {
-    const ctx = canvas.getContext('2d')
-    ctx.fillStyle = 'purple'
-    ctx.fillRect(0, 0, 100, 100)
+  const handleCanvas = (canvas: Canvas | null) => {
+    if (!canvas) {
+      return
+    }
 
+    // set canvas size
+    canvas.width = dimensions.window.width
+    canvas.height = dimensions.window.height
+
+    // set canvas ref
     canvasEl.current = canvas
   }
 
   const draw = () => {
-    if (!canvasEl.current) {
+    if (
+      !canvasEl.current ||
+      !options.obstacleImage ||
+      !options.skyImage ||
+      !options.groundImage ||
+      !options.playerImage
+    ) {
       return
     }
 
@@ -123,8 +180,8 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     let groundSpeed = (options.groundSpeed + level) / options.fps
     let skySpeed = options.skySpeed / options.fps
     let obstacleWidth = options.obstacleImage.width
-    let playerWidth = options.playerImage[0].width
-    let playerHeight = options.playerImage[0].height
+    let playerWidth = options.playerImage[0].width || 0
+    let playerHeight = options.playerImage[0].height || 0
 
     const ctx = canvasEl.current?.getContext('2d')
     const {width, height} = canvasEl.current
@@ -132,14 +189,14 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     ctx.clearRect(0, 0, width, height)
     ctx.save()
 
-    // 云
+    // sky image
     options.skyOffset =
       options.skyOffset < width ? options.skyOffset + skySpeed : options.skyOffset - width
     ctx.translate(-options.skyOffset, 0)
     ctx.drawImage(options.skyImage, 0, 0)
     ctx.drawImage(options.skyImage, options.skyImage.width, 0)
 
-    // 地面
+    // ground image
     options.groundOffset =
       options.groundOffset < width
         ? options.groundOffset + groundSpeed
@@ -148,11 +205,11 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     ctx.drawImage(options.groundImage, 0, 76)
     ctx.drawImage(options.groundImage, options.groundImage.width, 76)
 
-    // 恐龙
-    // 这里已经将坐标还原回左上角
+    // player image
     ctx.translate(options.groundOffset, 0)
     ctx.drawImage(options.playerImage[playerStatus], 80, 64 - jumpHeight)
-    // 更新跳跃高度/速度
+
+    // jump
     jumpHeight = jumpHeight + jumpDelta
     if (jumpHeight <= 1) {
       jumpHeight = 0
@@ -165,7 +222,7 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
       jumpDelta = -JUMP_DELTA / 2.7
     }
 
-    // 分数
+    // high score
     let scoreText = (status === STATUS.OVER ? 'GAME OVER  ' : '') + Math.floor(score)
     ctx.font = 'Bold 18px Arial'
     ctx.textAlign = 'right'
@@ -252,6 +309,7 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     jump()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pause = () => {
     if (status === STATUS.START) {
       status = STATUS.PAUSE
@@ -259,6 +317,7 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const goOn = () => {
     if (status === STATUS.PAUSE) {
       status = STATUS.START
@@ -304,33 +363,15 @@ const Dinosaur: React.FC<DinosaurTypes> = props => {
     }
   }
 
-  useEffect(() => {
-    // if (dimensions.window.width >= 680) {
-    //   // @ts-ignore
-    //   canvasEl?.current?.width = 680
-    // }
-
-    // window.onkeypress = function (e) {
-    //   if (e.key === ' ') {
-    //     onSpacePress()
-    //   }
-    // }
-    // canvasEl.current.parentNode.onclick = onSpacePress
-
-    // window.onblur = this.pause
-    // window.onfocus = this.goOn
-
-    // return () => {
-    //   window.onblur = null
-    //   window.onfocus = null
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Canvas ref={handleCanvas} />
-    </TouchableOpacity>
+    <ScreenLayout
+      isSafeAreaView={true}
+      isScrollView={false}
+      edges={['right', 'top', 'left', 'bottom']}>
+      <TouchableOpacity onPress={onPress}>
+        <Canvas ref={handleCanvas} />
+      </TouchableOpacity>
+    </ScreenLayout>
   )
 }
 
