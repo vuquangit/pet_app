@@ -127,7 +127,7 @@ export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
                 Sign up is successfully, please sign in.
               </Text>
               <ButtonField
-                title="Redirect to Sign In"
+                title="Sign In"
                 variant="primary"
                 className="mb-4"
                 onPress={() => {

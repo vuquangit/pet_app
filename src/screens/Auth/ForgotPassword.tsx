@@ -1,20 +1,21 @@
 import React, {FC} from 'react'
 import {Text, View, Keyboard} from 'react-native'
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faHouse} from '@fortawesome/free-solid-svg-icons/faHouse'
 
 import {useForgotPassword} from 'src/hooks/useForgotPassword'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
 import {InputField, ButtonField} from 'src/components/Form'
-import {Link} from 'src/components/Link'
 import {PATTERN_EMAIL} from 'src/constants/patterns'
 
 type FormValues = {
   email: string
 }
 
-export const ForgotPasswordScreen: FC = () => {
+type ForgotPasswordTypes = {
+  navigation: any
+}
+
+export const ForgotPasswordScreen: FC<ForgotPasswordTypes> = ({navigation: {navigate}}) => {
   const {isLoading, isSuccess, onSubmit} = useForgotPassword()
 
   const {...methods} = useForm({
@@ -71,25 +72,28 @@ export const ForgotPasswordScreen: FC = () => {
             </>
           ) : (
             <View className="py-4">
-              <Text className="text-base leading-5 text-green-600">
-                Reset password has been sent to: {methods.getValues('email')}
+              <Text className="text-base leading-6 text-gray-800">
+                Reset password has been sent to:{' '}
+                <Text className="font-bold">{methods.getValues('email')}</Text>
               </Text>
-              <Text className="text-base leading-5 text-green-600">
+              <Text className="text-base leading-6 text-gray-800">
                 Please access the URL in the body of the email to compete te password change.
               </Text>
-              <Text className="text-base leading-5 text-green-600">
+              <Text className="text-base leading-6 text-gray-800">
                 If you do not receive the email after 30 minutes, please check the email address you
                 entered, as it may be incorrect or in your spam folder.
               </Text>
             </View>
           )}
 
-          <Link to={{screen: 'SignIn'}}>
-            <View className="flex flex-row items-center gap-1.5">
-              <FontAwesomeIcon icon={faHouse} color="#4b5563" size={20} />
-              <Text className="text-base font-medium text-blue-600">Return to Sign In</Text>
-            </View>
-          </Link>
+          <ButtonField
+            title="Sign In"
+            variant="primary"
+            className="mb-4"
+            onPress={() => {
+              navigate('SignIn')
+            }}
+          />
         </View>
       </FormProvider>
     </ScreenLayout>
