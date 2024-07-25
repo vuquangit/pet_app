@@ -1,12 +1,11 @@
-import React, {useEffect, useRef} from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import React, {useEffect, useRef, useState} from 'react'
+import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native'
 import Canvas, {Image as CanvasImage} from 'react-native-canvas'
 
 import {deviceStorage} from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
 import {useDimensions} from 'src/hooks/useDimensions'
-
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import classNames from 'classnames'
 
 const STATUS = {
   STOP: 'STOP',
@@ -33,6 +32,8 @@ type OptionsType = {
 const Dinosaur: React.FC = () => {
   const canvasEl = useRef<Canvas | null>()
   const {dimensions} = useDimensions()
+
+  const [isShowStart, setIsShowStart] = useState(true)
 
   let imageLoadCount = 0
   let onImageLoaded = () => {
@@ -81,77 +82,6 @@ const Dinosaur: React.FC = () => {
   let currentDistance = 0
   let playerStatus = 0
 
-  useEffect(() => {
-    if (!canvasEl.current) {
-      return
-    }
-
-    const skyImage = new CanvasImage(canvasEl.current)
-    const groundImage = new CanvasImage(canvasEl.current)
-    const playerImage = new CanvasImage(canvasEl.current)
-    const playerLeftImage = new CanvasImage(canvasEl.current)
-    const playerRightImage = new CanvasImage(canvasEl.current)
-    const playerDieImage = new CanvasImage(canvasEl.current)
-    const obstacleImage = new CanvasImage(canvasEl.current)
-
-    // skyImage.src = require('../../../assets/images/dinosaur/cloud.png')
-    skyImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/cloud.png'
-    skyImage.addEventListener('load', onImageLoaded)
-
-    // groundImage.src = require('../../../assets/images/dinosaur/ground.png')
-    groundImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/ground.png'
-    groundImage.addEventListener('load', onImageLoaded)
-
-    // playerImage.src = require('../../../assets/images/dinosaur/dinosaur.png')
-    playerImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur.png'
-    playerImage.addEventListener('load', onImageLoaded)
-
-    // playerLeftImage.src = require('../../../assets/images/dinosaur/dinosaur_left.png')
-    playerLeftImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_left.png'
-    playerLeftImage.addEventListener('load', onImageLoaded)
-
-    // playerRightImage.src = require('../../../assets/images/dinosaur/dinosaur_right.png')
-    playerRightImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_right.png'
-    playerRightImage.addEventListener('load', onImageLoaded)
-
-    // playerDieImage.src = require('../../../assets/images/dinosaur/dinosaur_die.png')
-    playerDieImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_die.png'
-    playerDieImage.addEventListener('load', onImageLoaded)
-
-    // obstacleImage.src = require('../../../assets/images/dinosaur/obstacle.png')
-    obstacleImage.src =
-      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/obstacle.png'
-    obstacleImage.addEventListener('load', onImageLoaded)
-
-    setOptions({
-      fps: 60,
-      skySpeed: 40,
-      groundSpeed: 100,
-      skyImage: skyImage,
-      groundImage: groundImage,
-      playerImage: [playerImage, playerLeftImage, playerRightImage, playerDieImage],
-      obstacleImage: obstacleImage,
-      skyOffset: 0,
-      groundOffset: 0,
-    })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvasEl])
-
-  useEffect(() => {
-    // eslint-disable-next-line no-extra-semi
-    ;(async () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      highScore = Number((await deviceStorage.getItem(storageKeys.dinosaur_high_score)).value || 0)
-    })()
-  }, [])
-
   const handleCanvas = (canvas: Canvas | null) => {
     if (!canvas) {
       return
@@ -176,12 +106,15 @@ const Dinosaur: React.FC = () => {
       return
     }
 
+    setIsShowStart(false)
+
     let level = Math.min(200, Math.floor(score / 100))
     let groundSpeed = (options.groundSpeed + level) / options.fps
     let skySpeed = options.skySpeed / options.fps
     let obstacleWidth = options.obstacleImage.width
     let playerWidth = options.playerImage[0].width || 0
     let playerHeight = options.playerImage[0].height || 0
+    const PADDING_TOP = 40
 
     const ctx = canvasEl.current?.getContext('2d')
     const {width, height} = canvasEl.current
@@ -193,8 +126,8 @@ const Dinosaur: React.FC = () => {
     options.skyOffset =
       options.skyOffset < width ? options.skyOffset + skySpeed : options.skyOffset - width
     ctx.translate(-options.skyOffset, 0)
-    ctx.drawImage(options.skyImage, 0, 0)
-    ctx.drawImage(options.skyImage, options.skyImage.width, 0)
+    ctx.drawImage(options.skyImage, 0, PADDING_TOP + 0)
+    ctx.drawImage(options.skyImage, options.skyImage.width, PADDING_TOP + 0)
 
     // ground image
     options.groundOffset =
@@ -202,12 +135,12 @@ const Dinosaur: React.FC = () => {
         ? options.groundOffset + groundSpeed
         : options.groundOffset - width
     ctx.translate(options.skyOffset - options.groundOffset, 0)
-    ctx.drawImage(options.groundImage, 0, 76)
-    ctx.drawImage(options.groundImage, options.groundImage.width, 76)
+    ctx.drawImage(options.groundImage, 0, PADDING_TOP + 76)
+    ctx.drawImage(options.groundImage, options.groundImage.width, PADDING_TOP + 76)
 
     // player image
     ctx.translate(options.groundOffset, 0)
-    ctx.drawImage(options.playerImage[playerStatus], 80, 64 - jumpHeight)
+    ctx.drawImage(options.playerImage[playerStatus], 80, PADDING_TOP + 64 - jumpHeight)
 
     // jump
     jumpHeight = jumpHeight + jumpDelta
@@ -251,7 +184,7 @@ const Dinosaur: React.FC = () => {
       if (currentDistance >= obstacles[i].distance) {
         let offset = width - (currentDistance - obstacles[i].distance + groundSpeed)
         if (offset > 0) {
-          ctx.drawImage(options.obstacleImage, offset, 84)
+          ctx.drawImage(options.obstacleImage, offset, PADDING_TOP + 84)
         } else {
           ++pop
         }
@@ -363,15 +296,100 @@ const Dinosaur: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (!canvasEl.current) {
+      return
+    }
+
+    const skyImage = new CanvasImage(canvasEl.current)
+    const groundImage = new CanvasImage(canvasEl.current)
+    const playerImage = new CanvasImage(canvasEl.current)
+    const playerLeftImage = new CanvasImage(canvasEl.current)
+    const playerRightImage = new CanvasImage(canvasEl.current)
+    const playerDieImage = new CanvasImage(canvasEl.current)
+    const obstacleImage = new CanvasImage(canvasEl.current)
+
+    // skyImage.src = require('../../../assets/images/dinosaur/cloud.png')
+    skyImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/cloud.png'
+    skyImage.addEventListener('load', onImageLoaded)
+
+    // groundImage.src = require('../../../assets/images/dinosaur/ground.png')
+    groundImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/ground.png'
+    groundImage.addEventListener('load', onImageLoaded)
+
+    // playerImage.src = require('../../../assets/images/dinosaur/dinosaur.png')
+    playerImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur.png'
+    playerImage.addEventListener('load', onImageLoaded)
+
+    // playerLeftImage.src = require('../../../assets/images/dinosaur/dinosaur_left.png')
+    playerLeftImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_left.png'
+    playerLeftImage.addEventListener('load', onImageLoaded)
+
+    // playerRightImage.src = require('../../../assets/images/dinosaur/dinosaur_right.png')
+    playerRightImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_right.png'
+    playerRightImage.addEventListener('load', onImageLoaded)
+
+    // playerDieImage.src = require('../../../assets/images/dinosaur/dinosaur_die.png')
+    playerDieImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/dinosaur_die.png'
+    playerDieImage.addEventListener('load', onImageLoaded)
+
+    // obstacleImage.src = require('../../../assets/images/dinosaur/obstacle.png')
+    obstacleImage.src =
+      'https://raw.githubusercontent.com/SagarKhengat/react-native-offline-game/master/src/img/obstacle.png'
+    obstacleImage.addEventListener('load', onImageLoaded)
+
+    setOptions({
+      fps: 60,
+      skySpeed: 40,
+      groundSpeed: 100,
+      skyImage: skyImage,
+      groundImage: groundImage,
+      playerImage: [playerImage, playerLeftImage, playerRightImage, playerDieImage],
+      obstacleImage: obstacleImage,
+      skyOffset: 0,
+      groundOffset: 0,
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasEl])
+
+  useEffect(() => {
+    // eslint-disable-next-line no-extra-semi
+    ;(async () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      highScore = Number((await deviceStorage.getItem(storageKeys.dinosaur_high_score)).value || 0)
+    })()
+  }, [])
+
   return (
-    <ScreenLayout
-      isSafeAreaView={true}
-      isScrollView={false}
-      edges={['right', 'top', 'left', 'bottom']}>
-      <TouchableOpacity onPress={onPress}>
+    <Pressable onPress={onPress}>
+      <View className="relative">
         <Canvas ref={handleCanvas} />
-      </TouchableOpacity>
-    </ScreenLayout>
+
+        <View
+          className={classNames('absolute top-0 left-0 w-full', {
+            hidden: !isShowStart,
+          })}>
+          <View className="flex items-center justify-center w-full pt-4">
+            <Image
+              className="w-18 h-18"
+              source={require('../../../assets/images/dinosaur/dinosaur.png')}
+            />
+            <Text className="text-3xl text-[#595959] font-bold text-center">Tap to start</Text>
+          </View>
+        </View>
+
+        <View className="absolute top-[180px] left-0 p-3">
+          <Text className="text-xl text-[#595959] font-bold">Top scores</Text>
+        </View>
+      </View>
+    </Pressable>
   )
 }
 

@@ -28,6 +28,7 @@ export const Navigation: FC = () => {
 
   // get profile
   useEffect(() => {
+    // eslint-disable-next-line no-extra-semi
     ;(async () => {
       const {value: accessToken} = await deviceStorage.getItem(storageKeys.access_token)
 
@@ -55,6 +56,7 @@ export const Navigation: FC = () => {
               options={{
                 tabBarLabel: 'Home',
                 tabBarAccessibilityLabel: 'Home',
+                // eslint-disable-next-line react/no-unstable-nested-components
                 tabBarIcon: ({color}) => <FontAwesomeIcon icon={faHouse} color={color} size={20} />,
               }}
             />
@@ -64,6 +66,7 @@ export const Navigation: FC = () => {
               options={{
                 tabBarLabel: 'Profile',
                 tabBarAccessibilityLabel: 'Profile',
+                // eslint-disable-next-line react/no-unstable-nested-components
                 tabBarIcon: ({color}) => <FontAwesomeIcon icon={faUser} color={color} size={20} />,
               }}
             />
@@ -73,6 +76,7 @@ export const Navigation: FC = () => {
               options={{
                 tabBarLabel: 'Settings',
                 tabBarAccessibilityLabel: 'Settings',
+                // eslint-disable-next-line react/no-unstable-nested-components
                 tabBarIcon: ({color}) => <FontAwesomeIcon icon={faGear} color={color} size={20} />,
               }}
             />
