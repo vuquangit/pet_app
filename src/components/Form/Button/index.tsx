@@ -8,6 +8,7 @@ interface BaseButtonProps extends ButtonProps {
   className?: string
   children?: React.ReactNode
   disabled?: boolean
+  type?: 'button' | 'text'
 }
 
 export const ButtonField: FC<BaseButtonProps> = ({
@@ -16,6 +17,7 @@ export const ButtonField: FC<BaseButtonProps> = ({
   variant = 'default',
   className,
   disabled,
+  type,
   ...props
 }) => {
   const baseStyles = classNames(
@@ -26,6 +28,7 @@ export const ButtonField: FC<BaseButtonProps> = ({
       'bg-blue-600 hover:bg-blue-700': variant === 'primary',
       'bg-white': variant === 'secondary',
       'bg-gray-200 cursor-not-allowed': disabled,
+      'border-none bg-inherit outline-none': type === 'text',
     },
     className,
   )

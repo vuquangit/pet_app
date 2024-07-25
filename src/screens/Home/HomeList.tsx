@@ -2,6 +2,7 @@ import React, {FC} from 'react'
 import {Image, Text, View} from 'react-native'
 import {ButtonField} from 'src/components/Form'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import TopScores from './Dinosaur/TopScores'
 
 interface PropsType {
   navigation: any
@@ -25,6 +26,10 @@ const HomeList: FC<PropsType> = ({navigation}) => {
             <Text className="mt-3 font-bold text-center text-gray-800">Dinosaur</Text>
           </View>
         </ButtonField>
+
+        <View>
+          <TopScores />
+        </View>
       </View>
     </ScreenLayout>
   )

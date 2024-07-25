@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native'
+import {Image, Pressable, Text, View} from 'react-native'
 import Canvas, {Image as CanvasImage} from 'react-native-canvas'
 
 import {deviceStorage} from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
 import {useDimensions} from 'src/hooks/useDimensions'
 import classNames from 'classnames'
+import TopScores from './TopScores'
 
 const STATUS = {
   STOP: 'STOP',
@@ -387,6 +388,7 @@ const Dinosaur: React.FC = () => {
 
         <View className="absolute top-[180px] left-0 p-3">
           <Text className="text-xl text-[#595959] font-bold">Top scores</Text>
+          <TopScores />
         </View>
       </View>
     </Pressable>
