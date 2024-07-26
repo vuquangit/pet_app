@@ -3,7 +3,7 @@ import DataTable from 'src/components/Form/Table/DataTable'
 
 const TopScores = () => {
   const [page, setPage] = React.useState<number>(0)
-  const [numberOfItemsPerPageList] = React.useState([2, 3, 4])
+  const [numberOfItemsPerPageList] = React.useState([5, 10, 20, 50])
   const [itemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0])
 
   const [items] = React.useState(
@@ -11,9 +11,9 @@ const TopScores = () => {
       .fill(undefined)
       .map((_, index) => ({
         key: index,
-        name: `Item ${index}`,
-        calories: 356,
-        fat: 16,
+        name: `Item ${index + 1}`,
+        calories: 356 + index,
+        fat: 16 + index * 2,
       })),
   )
 

@@ -1,14 +1,5 @@
 import * as React from 'react'
-import {
-  ColorValue,
-  // I18nManager,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-  Button,
-} from 'react-native'
+import {ColorValue, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faBackwardStep} from '@fortawesome/free-solid-svg-icons/faBackwardStep'
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons/faChevronLeft'
@@ -16,16 +7,6 @@ import {faChevronRight} from '@fortawesome/free-solid-svg-icons/faChevronRight'
 import {faForwardStep} from '@fortawesome/free-solid-svg-icons/faForwardStep'
 
 import {ButtonField} from 'src/components/Form'
-
-// import color from 'color'
-// import type {ThemeProp} from 'src/types'
-
-// import {useInternalTheme} from '../../core/theming'
-// import Button from '../Button/Button'
-// import IconButton from '../IconButton/IconButton'
-// import MaterialCommunityIcon from '../MaterialCommunityIcon'
-// import Menu from '../Menu/Menu'
-// import Text from '../Typography/Text'
 
 export type Props = React.ComponentPropsWithRef<typeof View> &
   PaginationControlsProps &
@@ -102,11 +83,13 @@ type PaginationControlsProps = {
 const PaginationControls = ({
   page,
   numberOfPages,
-  onPageChange,
   showFastPaginationControls,
+  onPageChange,
 }: PaginationControlsProps) => {
+  const isDisabledNext = numberOfPages === 0 || page === numberOfPages - 1
+
   return (
-    <View className="flex flex-row gap-2">
+    <View className="flex flex-row gap-1">
       {showFastPaginationControls ? (
         <ButtonField
           disabled={page === 0}
@@ -114,7 +97,11 @@ const PaginationControls = ({
           title=""
           type="text"
           className="w-6">
-          <FontAwesomeIcon icon={faBackwardStep} size={20} color="#000" />
+          <FontAwesomeIcon
+            icon={faBackwardStep}
+            size={20}
+            color={page === 0 ? '#BBBBBB' : '#27374D'}
+          />
         </ButtonField>
       ) : null}
 
@@ -124,27 +111,39 @@ const PaginationControls = ({
         title=""
         type="text"
         className="w-6">
-        <FontAwesomeIcon icon={faChevronLeft} size={20} color="black" />
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          size={20}
+          color={page === 0 ? '#BBBBBB' : '#27374D'}
+        />
       </ButtonField>
 
       <ButtonField
-        disabled={numberOfPages === 0 || page === numberOfPages - 1}
+        disabled={isDisabledNext}
         onPress={() => onPageChange(page + 1)}
         title=""
         type="text"
         className="w-6">
-        <FontAwesomeIcon icon={faChevronRight} size={20} color="black" />
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          size={20}
+          color={isDisabledNext ? '#BBBBBB' : '#27374D'}
+        />
       </ButtonField>
 
       {showFastPaginationControls ? (
         <ButtonField
-          disabled={numberOfPages === 0 || page === numberOfPages - 1}
+          disabled={isDisabledNext}
           onPress={() => onPageChange(numberOfPages - 1)}
           accessibilityLabel="page-last"
           title=""
           type="text"
           className="w-6">
-          <FontAwesomeIcon icon={faForwardStep} size={20} color="black" />
+          <FontAwesomeIcon
+            icon={faForwardStep}
+            size={20}
+            color={isDisabledNext ? '#BBBBBB' : '#27374D'}
+          />
         </ButtonField>
       ) : null}
     </View>
