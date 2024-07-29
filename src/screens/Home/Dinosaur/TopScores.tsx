@@ -3,7 +3,7 @@ import DataTable from 'src/components/Form/Table/DataTable'
 
 const TopScores = () => {
   const [page, setPage] = React.useState<number>(0)
-  const [numberOfItemsPerPageList] = React.useState([5, 10, 20, 50])
+  const [numberOfItemsPerPageList] = React.useState([5, 10, 20])
   const [itemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0])
 
   const [items] = React.useState(
@@ -43,13 +43,13 @@ const TopScores = () => {
       <DataTable.Pagination
         page={page}
         numberOfPages={Math.ceil(items.length / itemsPerPage)}
-        onPageChange={page => setPage(page)}
+        onPageChange={_page => setPage(_page)}
         label={`${from + 1}-${to} of ${items.length}`}
         numberOfItemsPerPageList={numberOfItemsPerPageList}
         numberOfItemsPerPage={itemsPerPage}
         onItemsPerPageChange={onItemsPerPageChange}
         showFastPaginationControls
-        selectPageDropdownLabel={'Rows per page'}
+        selectPageDropdownLabel={'Per page'}
       />
     </DataTable>
   )

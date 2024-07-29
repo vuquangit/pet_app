@@ -6,7 +6,7 @@ import {faChevronLeft} from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons/faChevronRight'
 import {faForwardStep} from '@fortawesome/free-solid-svg-icons/faForwardStep'
 
-import {ButtonField} from 'src/components/Form'
+import {ButtonField, Dropdown, IComboboxItem} from 'src/components/Form'
 
 export type Props = React.ComponentPropsWithRef<typeof View> &
   PaginationControlsProps &
@@ -14,7 +14,7 @@ export type Props = React.ComponentPropsWithRef<typeof View> &
     /**
      * Label text for select page dropdown to display.
      */
-    selectPageDropdownLabel?: React.ReactNode
+    selectPageDropdownLabel?: string
     /**
      * AccessibilityLabel for `selectPageDropdownLabel`.
      */
@@ -35,6 +35,8 @@ export type Props = React.ComponentPropsWithRef<typeof View> &
   }
 
 type PaginationDropdownProps = {
+  label?: string
+  placeholder?: string
   /**
    * The current number of rows per page.
    */
@@ -46,15 +48,7 @@ type PaginationDropdownProps = {
   /**
    * The function to set the number of rows per page.
    */
-  onItemsPerPageChange?: (numberOfItemsPerPage: number) => void
-  /**
-   * Color of the dropdown item ripple effect.
-   */
-  dropdownItemRippleColor?: ColorValue
-  /**
-   * Color of the select page dropdown ripple effect.
-   */
-  selectPageDropdownRippleColor?: ColorValue
+  onItemsPerPageChange: (numberOfItemsPerPage: number) => void
 }
 
 type PaginationControlsProps = {
@@ -150,113 +144,33 @@ const PaginationControls = ({
   )
 }
 
-// const PaginationDropdown = ({
-//   numberOfItemsPerPageList,
-//   numberOfItemsPerPage,
-//   onItemsPerPageChange,
-//   // theme: themeOverrides,
-//   // selectPageDropdownRippleColor,
-//   dropdownItemRippleColor,
-// }: PaginationDropdownProps) => {
-//   // const theme = useInternalTheme(themeOverrides)
-//   // const {colors} = theme
-//   const [showSelect, toggleSelect] = React.useState<boolean>(false)
+const PaginationDropdown = ({
+  label,
+  placeholder,
+  numberOfItemsPerPageList = [],
+  numberOfItemsPerPage = 0,
+  onItemsPerPageChange,
+}: PaginationDropdownProps) => {
+  const data: IComboboxItem[] = numberOfItemsPerPageList.map(item => {
+    return {label: `${item}`, value: item}
+  })
 
-//   return (
-//     <Menu
-//       visible={showSelect}
-//       onDismiss={() => toggleSelect(!showSelect)}
-//       // theme={theme}
-//       anchor={
-//         <Button
-//           mode="outlined"
-//           onPress={() => toggleSelect(true)}
-//           style={styles.button}
-//           icon="menu-down"
-//           contentStyle={styles.contentStyle}
-//           // theme={theme}
-//           // rippleColor={selectPageDropdownRippleColor}
-//         >
-//           <Text>{`${numberOfItemsPerPage}`}</Text>
-//         </Button>
-//       }>
-//       {numberOfItemsPerPageList?.map(option => (
-//         <Menu.Item
-//           key={option}
-//           titleStyle={
-//             option === numberOfItemsPerPage &&
-//             {
-//               // color: colors?.primary,
-//             }
-//           }
-//           onPress={() => {
-//             onItemsPerPageChange?.(option)
-//             toggleSelect(false)
-//           }}
-//           rippleColor={dropdownItemRippleColor}
-//           title={option}
-//           // theme={theme}
-//         />
-//       ))}
-//     </Menu>
-//   )
-// }
+  const selected: IComboboxItem = {
+    label: `${numberOfItemsPerPage || 0}`,
+    value: numberOfItemsPerPage || 0,
+  }
 
-/**
- * A component to show pagination for data table.
- *
- * ## Usage
- * ```js
- * import * as React from 'react';
- * import { DataTable } from 'react-native-paper';
- *
- * const numberOfItemsPerPageList = [2, 3, 4];
- *
- * const items = [
- *   {
- *     key: 1,
- *     name: 'Page 1',
- *   },
- *   {
- *     key: 2,
- *     name: 'Page 2',
- *   },
- *   {
- *     key: 3,
- *     name: 'Page 3',
- *   },
- * ];
- *
- * const MyComponent = () => {
- *   const [page, setPage] = React.useState(0);
- *   const [numberOfItemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0]);
- *   const from = page * numberOfItemsPerPage;
- *   const to = Math.min((page + 1) * numberOfItemsPerPage, items.length);
- *
- *   React.useEffect(() => {
- *      setPage(0);
- *   }, [numberOfItemsPerPage]);
- *
- *   return (
- *     <DataTable>
- *       <DataTable.Pagination
- *         page={page}
- *         numberOfPages={Math.ceil(items.length / numberOfItemsPerPage)}
- *         onPageChange={page => setPage(page)}
- *         label={`${from + 1}-${to} of ${items.length}`}
- *         showFastPaginationControls
- *         numberOfItemsPerPageList={numberOfItemsPerPageList}
- *         numberOfItemsPerPage={numberOfItemsPerPage}
- *         onItemsPerPageChange={onItemsPerPageChange}
- *         selectPageDropdownLabel={'Rows per page'}
- *       />
- *     </DataTable>
- *   );
- * };
- *
- * export default MyComponent;
- * ```
- */
+  return (
+    <Dropdown
+      label={label}
+      placeholder={placeholder}
+      selected={selected}
+      data={data}
+      onSelect={val => onItemsPerPageChange(Number(val.value))}
+    />
+  )
+}
+
 const DataTablePagination = ({
   label,
   accessibilityLabel,
@@ -269,44 +183,29 @@ const DataTablePagination = ({
   numberOfItemsPerPage,
   onItemsPerPageChange,
   selectPageDropdownLabel,
-  selectPageDropdownAccessibilityLabel,
-  // selectPageDropdownRippleColor,
-  // dropdownItemRippleColor,
-  // theme: themeOverrides,
   ...rest
 }: Props) => {
-  // const theme = useInternalTheme(themeOverrides)
-  // const labelColor = color(theme.isV3 ? theme.colors.onSurface : theme?.colors.text)
-  //   .alpha(0.6)
-  //   .rgb()
-  //   .string()
-
   return (
     <View {...rest} style={[styles.container, style]} accessibilityLabel="pagination-container">
       {numberOfItemsPerPageList && numberOfItemsPerPage && onItemsPerPageChange && (
         <View accessibilityLabel="Options Select" style={styles.optionsContainer}>
-          <Text
-            style={[styles.label]}
-            numberOfLines={3}
-            accessibilityLabel={selectPageDropdownAccessibilityLabel || 'selectPageDropdownLabel'}>
-            {selectPageDropdownLabel}
-          </Text>
-          {/* <PaginationDropdown
+          <PaginationDropdown
+            label={selectPageDropdownLabel}
             numberOfItemsPerPageList={numberOfItemsPerPageList}
             numberOfItemsPerPage={numberOfItemsPerPage}
             onItemsPerPageChange={onItemsPerPageChange}
-            selectPageDropdownRippleColor={selectPageDropdownRippleColor}
-            dropdownItemRippleColor={dropdownItemRippleColor}
-            // theme={theme}
-          /> */}
+          />
         </View>
       )}
+
       <Text
         style={[styles.label]}
         numberOfLines={3}
-        accessibilityLabel={accessibilityLabel || 'label'}>
+        accessibilityLabel={accessibilityLabel || 'label'}
+        className="ml-1">
         {label}
       </Text>
+
       <View style={styles.iconsContainer}>
         <PaginationControls
           showFastPaginationControls={showFastPaginationControls}
@@ -352,5 +251,4 @@ const styles = StyleSheet.create({
 
 export default DataTablePagination
 
-// @component-docs ignore-next-line
 export {DataTablePagination}
