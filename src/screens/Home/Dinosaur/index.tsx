@@ -8,11 +8,11 @@ import {useDimensions} from 'src/hooks/useDimensions'
 import classNames from 'classnames'
 import TopScores from './TopScores'
 
-const STATUS = {
-  STOP: 'STOP',
-  START: 'START',
-  PAUSE: 'PAUSE',
-  OVER: 'OVER',
+enum EStatus {
+  STOP = 'STOP',
+  START = 'START',
+  PAUSE = 'PAUSE',
+  OVER = 'OVER',
 }
 
 const JUMP_DELTA = 5
@@ -41,7 +41,6 @@ const Dinosaur: React.FC = () => {
     ++imageLoadCount
     if (imageLoadCount === 7) {
       setTimeout(() => {
-        console.log('obstacleImage:', options?.obstacleImage)
         draw()
       }, 0)
     }
@@ -72,7 +71,7 @@ const Dinosaur: React.FC = () => {
     groundOffset: 0,
   })
 
-  let status = STATUS.STOP
+  let status: EStatus = EStatus.STOP
   let timer: any = null
   let score = 0
   let highScore = 0
@@ -157,12 +156,12 @@ const Dinosaur: React.FC = () => {
     }
 
     // high score
-    let scoreText = (status === STATUS.OVER ? 'GAME OVER  ' : '') + Math.floor(score)
+    let scoreText = (status === EStatus.OVER ? 'GAME OVER  ' : '') + Math.floor(score)
     ctx.font = 'Bold 18px Arial'
     ctx.textAlign = 'right'
     ctx.fillStyle = '#595959'
     ctx.fillText(scoreText, width - 30, 23)
-    if (status === STATUS.START) {
+    if (status === EStatus.START) {
       score += 0.5
       if (score > highScore) {
         highScore = score
@@ -234,36 +233,36 @@ const Dinosaur: React.FC = () => {
   }
 
   const start = () => {
-    if (status === STATUS.START) {
+    if (status === EStatus.START) {
       return
     }
 
-    status = STATUS.START
+    status = EStatus.START
     setTimer()
     jump()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pause = () => {
-    if (status === STATUS.START) {
-      status = STATUS.PAUSE
+    if (status === EStatus.START) {
+      status = EStatus.PAUSE
       clearTimer()
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const goOn = () => {
-    if (status === STATUS.PAUSE) {
-      status = STATUS.START
+    if (status === EStatus.PAUSE) {
+      status = EStatus.START
       setTimer()
     }
   }
 
   const stop = () => {
-    if (status === STATUS.OVER) {
+    if (status === EStatus.OVER) {
       return
     }
-    status = STATUS.OVER
+    status = EStatus.OVER
     playerStatus = 3
     clearTimer()
     draw()
@@ -285,13 +284,13 @@ const Dinosaur: React.FC = () => {
 
   const onPress = () => {
     switch (status) {
-      case STATUS.STOP:
+      case EStatus.STOP:
         start()
         break
-      case STATUS.START:
+      case EStatus.START:
         jump()
         break
-      case STATUS.OVER:
+      case EStatus.OVER:
         restart()
         break
     }
@@ -386,7 +385,10 @@ const Dinosaur: React.FC = () => {
           </View>
         </View>
 
-        <View className="absolute top-[180px] left-0 p-3">
+        <View
+          className={classNames('absolute top-[180px] left-0 p-3', {
+            // hidden: statusText === EStatus.START,
+          })}>
           <Text className="text-xl text-[#595959] font-bold">Top scores</Text>
           <TopScores />
         </View>
