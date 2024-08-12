@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {Pressable, ButtonProps, Text} from 'react-native'
+import {Pressable, ButtonProps, Text, GestureResponderEvent} from 'react-native'
 import classNames from 'classnames'
 
 interface BaseButtonProps extends ButtonProps {
@@ -8,6 +8,8 @@ interface BaseButtonProps extends ButtonProps {
   className?: string
   children?: React.ReactNode
   disabled?: boolean
+  type?: 'button' | 'text'
+  onPress: (e: GestureResponderEvent) => void
 }
 
 export const ButtonField: FC<BaseButtonProps> = ({
@@ -16,6 +18,8 @@ export const ButtonField: FC<BaseButtonProps> = ({
   variant = 'default',
   className,
   disabled,
+  type = 'button',
+  onPress,
   ...props
 }) => {
   const baseStyles = classNames(
@@ -25,7 +29,8 @@ export const ButtonField: FC<BaseButtonProps> = ({
     {
       'bg-blue-600 hover:bg-blue-700': variant === 'primary',
       'bg-white': variant === 'secondary',
-      'bg-gray-200 cursor-not-allowed': disabled,
+      'bg-gray-200 cursor-not-allowed': type !== 'text' && disabled,
+      'border-none bg-transparent outline-none': type === 'text',
     },
     className,
   )
@@ -36,7 +41,7 @@ export const ButtonField: FC<BaseButtonProps> = ({
   })
 
   return (
-    <Pressable className={baseStyles} {...props}>
+    <Pressable className={baseStyles} onPress={disabled ? undefined : onPress} {...props}>
       {title && <Text className={textStyles}>{title}</Text>}
       {children}
     </Pressable>

@@ -1,6 +1,8 @@
 # react-native-config
 pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(

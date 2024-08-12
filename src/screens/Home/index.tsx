@@ -1,24 +1,32 @@
 import React, {FC} from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {Home1} from './Home1'
-import {Home2} from './Home2'
-import {Home3} from './Home3'
+import Dinosaur from './Dinosaur'
+import HomeList from './HomeList'
 
 // Stack
 const HomeStack = createNativeStackNavigator()
 
 export const HomeScreen: FC = () => {
   return (
-    <HomeStack.Navigator screenOptions={{headerShown: false}}>
-      <HomeStack.Screen name="home1" component={Home1} />
-      <HomeStack.Screen name="home2" component={Home2} />
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTintColor: 'white',
+        headerStyle: {backgroundColor: 'tomato'},
+      }}>
       <HomeStack.Screen
-        name="home3"
-        component={Home3}
+        name="home-list"
+        component={HomeList}
         options={{
-          presentation: 'modal',
-          headerTitle: 'Tweet Details',
-          headerShown: true,
+          title: 'Games',
+          headerShown: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="dinosaur"
+        component={Dinosaur}
+        options={{
+          title: 'Dinosaur game',
         }}
       />
     </HomeStack.Navigator>
