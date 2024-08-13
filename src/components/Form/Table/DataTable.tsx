@@ -1,7 +1,7 @@
 // https://github.com/callstack/react-native-paper/blob/main/src/components/DataTable/DataTable.tsx
 
 import * as React from 'react'
-import {StyleSheet, StyleProp, View, ViewStyle} from 'react-native'
+import { StyleSheet, StyleProp, View, ViewStyle } from 'react-native'
 
 import DataTableHeader, {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +20,7 @@ export type Props = React.ComponentPropsWithRef<typeof View> & {
   style?: StyleProp<ViewStyle>
 }
 
-const DataTable = ({children, style, ...rest}: Props) => (
+const DataTable = ({ children, style, ...rest }: Props) => (
   <View {...rest} style={[styles.container, style]}>
     {children}
   </View>

@@ -1,6 +1,6 @@
 import React from 'react'
-import {StatusBar, StyleSheet, Text, View} from 'react-native'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
 
 export const Setting1 = () => {
   return (

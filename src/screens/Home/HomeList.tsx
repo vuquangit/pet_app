@@ -1,14 +1,14 @@
-import React, {FC} from 'react'
-import {Image, Text, View} from 'react-native'
-import {ButtonField} from 'src/components/Form'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import React, { FC } from 'react'
+import { Image, Text, View } from 'react-native'
+import { ButtonField } from 'src/components/Form'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
 import TopScores from './Dinosaur/TopScores'
 
 interface PropsType {
   navigation: any
 }
 
-const HomeList: FC<PropsType> = ({navigation}) => {
+const HomeList: FC<PropsType> = ({ navigation }) => {
   return (
     <ScreenLayout isSafeAreaView={true} isScrollView>
       <View className="flex-1 p-2">

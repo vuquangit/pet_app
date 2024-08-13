@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ILaunching {
   isLaunching: boolean
@@ -20,5 +20,5 @@ export const launchingSlice = createSlice({
   },
 })
 
-export const {setLaunching, resetLaunching} = launchingSlice.actions
+export const { setLaunching, resetLaunching } = launchingSlice.actions
 export default launchingSlice.reducer

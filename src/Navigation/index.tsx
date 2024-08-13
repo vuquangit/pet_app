@@ -1,36 +1,36 @@
-import React, {FC, useEffect} from 'react'
-import {NavigationContainer} from '@react-navigation/native'
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faHouse} from '@fortawesome/free-solid-svg-icons/faHouse'
-import {faGear} from '@fortawesome/free-solid-svg-icons/faGear'
-import {faUser} from '@fortawesome/free-regular-svg-icons'
+import React, { FC, useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse'
+import { faGear } from '@fortawesome/free-solid-svg-icons/faGear'
+import { faUser } from '@fortawesome/free-regular-svg-icons'
 
-import {AuthStack} from './Stacks/AuthStack'
-import {HomeScreen} from 'src/screens/Home'
-import {ProfileScreen} from 'src/screens/Profile'
-import {SettingsScreen} from 'src/screens/Settings'
+import { AuthStack } from './Stacks/AuthStack'
+import { HomeScreen } from 'src/screens/Home'
+import { ProfileScreen } from 'src/screens/Profile'
+import { SettingsScreen } from 'src/screens/Settings'
 
-import {useAuth} from 'src/hooks/useAuth'
+import { useAuth } from 'src/hooks/useAuth'
 import useProfile from 'src/hooks/useProfile'
-import {useAppSelector} from 'src/store/hook'
-import {deviceStorage} from 'src/store/storage'
-import {selectCurrentUser} from 'src/store/auth'
+import { useAppSelector } from 'src/store/hook'
+import { deviceStorage } from 'src/store/storage'
+import { selectCurrentUser } from 'src/store/auth'
 import storageKeys from 'src/constants/storage-keys'
 
 const Tab = createBottomTabNavigator()
 
 export const Navigation: FC = () => {
-  const {isLoggedIn} = useAuth()
+  const { isLoggedIn } = useAuth()
   const user = useAppSelector(selectCurrentUser)
   const tokens = useAppSelector(state => state.tokens)
-  const {fetchProfile} = useProfile()
+  const { fetchProfile } = useProfile()
 
   // get profile
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
     ;(async () => {
-      const {value: accessToken} = await deviceStorage.getItem(storageKeys.access_token)
+      const { value: accessToken } = await deviceStorage.getItem(storageKeys.access_token)
 
       if ((accessToken || tokens.accessToken) && !user?.email) {
         await fetchProfile()
@@ -57,7 +57,9 @@ export const Navigation: FC = () => {
                 tabBarLabel: 'Home',
                 tabBarAccessibilityLabel: 'Home',
                 // eslint-disable-next-line react/no-unstable-nested-components
-                tabBarIcon: ({color}) => <FontAwesomeIcon icon={faHouse} color={color} size={20} />,
+                tabBarIcon: ({ color }) => (
+                  <FontAwesomeIcon icon={faHouse} color={color} size={20} />
+                ),
               }}
             />
             <Tab.Screen
@@ -67,7 +69,9 @@ export const Navigation: FC = () => {
                 tabBarLabel: 'Profile',
                 tabBarAccessibilityLabel: 'Profile',
                 // eslint-disable-next-line react/no-unstable-nested-components
-                tabBarIcon: ({color}) => <FontAwesomeIcon icon={faUser} color={color} size={20} />,
+                tabBarIcon: ({ color }) => (
+                  <FontAwesomeIcon icon={faUser} color={color} size={20} />
+                ),
               }}
             />
             <Tab.Screen
@@ -77,7 +81,9 @@ export const Navigation: FC = () => {
                 tabBarLabel: 'Settings',
                 tabBarAccessibilityLabel: 'Settings',
                 // eslint-disable-next-line react/no-unstable-nested-components
-                tabBarIcon: ({color}) => <FontAwesomeIcon icon={faGear} color={color} size={20} />,
+                tabBarIcon: ({ color }) => (
+                  <FontAwesomeIcon icon={faGear} color={color} size={20} />
+                ),
               }}
             />
           </>
@@ -90,7 +96,7 @@ export const Navigation: FC = () => {
               title: '',
               tabBarLabel: 'Auth',
               tabBarAccessibilityLabel: '',
-              tabBarStyle: {display: 'none'},
+              tabBarStyle: { display: 'none' },
             }}
           />
         )}

@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {Pressable, ButtonProps, Text, GestureResponderEvent} from 'react-native'
+import React, { FC } from 'react'
+import { Pressable, ButtonProps, Text, GestureResponderEvent } from 'react-native'
 import classNames from 'classnames'
 
 interface BaseButtonProps extends ButtonProps {

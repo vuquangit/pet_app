@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 // Reducers
 import authReducer from './auth'
@@ -6,8 +6,8 @@ import launchingReducer from './launching'
 import tokensReducer from './tokens'
 
 // Services
-import {authApi} from 'src/services/auth'
-import {oauthApi} from 'src/services/oauth'
+import { authApi } from 'src/services/auth'
+import { oauthApi } from 'src/services/oauth'
 
 // init store
 const preloadedState = {}

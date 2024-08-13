@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 // import remoteConfig from '@react-native-firebase/remote-config';
 import {
   // Alert,
@@ -13,7 +13,7 @@ type PropsType = {
   children: React.ReactNode
 }
 
-export const VersionCheckContainer: React.FC<PropsType> = ({children}) => {
+export const VersionCheckContainer: React.FC<PropsType> = ({ children }) => {
   useEffect(() => {
     const requestPermission = async () => {
       try {

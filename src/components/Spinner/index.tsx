@@ -3,7 +3,7 @@
 
 /* eslint @typescript-eslint/prefer-nullish-coalescing: 0 */
 import * as React from 'react'
-import {View, Text, Modal, ActivityIndicator} from 'react-native'
+import { View, Text, Modal, ActivityIndicator } from 'react-native'
 import classNames from 'classnames'
 
 export interface SpinnerPropTypes {

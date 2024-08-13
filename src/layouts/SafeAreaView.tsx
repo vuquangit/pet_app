@@ -1,6 +1,6 @@
-import React, {FC, useEffect, useState} from 'react'
-import {Edges, SafeAreaView as RNSafeAreaView} from 'react-native-safe-area-context'
-import {useAuth} from 'src/hooks'
+import React, { FC, useEffect, useState } from 'react'
+import { Edges, SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context'
+import { useAuth } from 'src/hooks'
 
 type PropsType = {
   children: React.ReactNode
@@ -8,8 +8,8 @@ type PropsType = {
   edges?: Edges
 }
 
-export const SafeAreaView: FC<PropsType> = ({children, isSafeAreaView = true}) => {
-  const {isLoggedIn} = useAuth()
+export const SafeAreaView: FC<PropsType> = ({ children, isSafeAreaView = true }) => {
+  const { isLoggedIn } = useAuth()
   const [edges, setEdges] = useState<Edges | undefined>(['right', 'top', 'left', 'bottom'])
 
   useEffect(() => {

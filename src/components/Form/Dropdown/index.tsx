@@ -1,7 +1,7 @@
-import React, {FC, ReactElement, useRef, useState} from 'react'
-import {FlatList, Text, TouchableOpacity, Modal, View} from 'react-native'
-import {faAngleDown} from '@fortawesome/free-solid-svg-icons/faAngleDown'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import React, { FC, ReactElement, useRef, useState } from 'react'
+import { FlatList, Text, TouchableOpacity, Modal, View } from 'react-native'
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 export interface IComboboxItem {
   label: string
@@ -55,7 +55,7 @@ export const Dropdown: FC<Props> = ({
     setVisible(false)
   }
 
-  const renderItem = ({item}: any) => (
+  const renderItem = ({ item }: any) => (
     <TouchableOpacity
       className="px-3 py-2 border-b border-gray-300"
       onPress={() => onItemPress(item)}>
@@ -70,7 +70,7 @@ export const Dropdown: FC<Props> = ({
           className="w-full h-full bg-transparent"
           onPress={() => setVisible(false)}>
           <View
-            style={[{top: dropdownTop, left: dropdownLeft, minWidth: minWidth}]}
+            style={[{ top: dropdownTop, left: dropdownLeft, minWidth: minWidth }]}
             className="absolute bg-white shadow-xl max-h-[180px] overflow-y-auto">
             <FlatList
               data={data}

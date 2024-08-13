@@ -1,11 +1,11 @@
-import React, {FC} from 'react'
-import {Text, View, Keyboard} from 'react-native'
-import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
+import React, { FC } from 'react'
+import { Text, View, Keyboard } from 'react-native'
+import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 
-import {useForgotPassword} from 'src/hooks/useForgotPassword'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
-import {InputField, ButtonField} from 'src/components/Form'
-import {PATTERN_EMAIL} from 'src/constants/patterns'
+import { useForgotPassword } from 'src/hooks/useForgotPassword'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
+import { InputField, ButtonField } from 'src/components/Form'
+import { PATTERN_EMAIL } from 'src/constants/patterns'
 
 type FormValues = {
   email: string
@@ -15,11 +15,11 @@ type ForgotPasswordTypes = {
   navigation: any
 }
 
-export const ForgotPasswordScreen: FC<ForgotPasswordTypes> = ({navigation: {navigate}}) => {
-  const {isLoading, isSuccess, onSubmit} = useForgotPassword()
+export const ForgotPasswordScreen: FC<ForgotPasswordTypes> = ({ navigation: { navigate } }) => {
+  const { isLoading, isSuccess, onSubmit } = useForgotPassword()
 
-  const {...methods} = useForm({
-    defaultValues: {email: ''},
+  const { ...methods } = useForm({
+    defaultValues: { email: '' },
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {

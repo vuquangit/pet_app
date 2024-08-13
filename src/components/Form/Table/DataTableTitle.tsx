@@ -89,7 +89,7 @@ const DataTableTitle = ({
   ...rest
 }: Props) => {
   // const theme = useInternalTheme(themeOverrides)
-  const {current: spinAnim} = React.useRef<Animated.Value>(
+  const { current: spinAnim } = React.useRef<Animated.Value>(
     new Animated.Value(sortDirection === 'ascending' ? 0 : 1),
   )
 
@@ -111,7 +111,7 @@ const DataTableTitle = ({
   })
 
   const icon = sortDirection ? (
-    <Animated.View style={[styles.icon, {transform: [{rotate: spin}]}]}>
+    <Animated.View style={[styles.icon, { transform: [{ rotate: spin }] }]}>
       {/* <MaterialCommunityIcon
         name="arrow-up"
         size={16}
@@ -133,7 +133,7 @@ const DataTableTitle = ({
         style={[
           styles.cell,
           // height must scale with numberOfLines
-          {maxHeight: 24 * numberOfLines},
+          { maxHeight: 24 * numberOfLines },
           // if numberOfLines causes wrap, center is lost. Align directly, sensitive to numeric and RTL
           numberOfLines > 1
             ? numeric
@@ -199,4 +199,4 @@ const styles = StyleSheet.create({
 export default DataTableTitle
 
 // @component-docs ignore-next-line
-export {DataTableTitle}
+export { DataTableTitle }

@@ -1,5 +1,5 @@
 // react-native-debugger
-import {DevSettings, NativeModules} from 'react-native'
+import { DevSettings, NativeModules } from 'react-native'
 
 const addDebugMenuItems = async () => {
   const message = {

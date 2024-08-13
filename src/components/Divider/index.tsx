@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {Text, View} from 'react-native'
+import React, { FC } from 'react'
+import { Text, View } from 'react-native'
 import classNames from 'classnames'
 
 interface PropsType {
@@ -7,7 +7,7 @@ interface PropsType {
   classNameWrapper?: string
 }
 
-export const Divider: FC<PropsType> = ({children, classNameWrapper}) => {
+export const Divider: FC<PropsType> = ({ children, classNameWrapper }) => {
   return (
     <View
       className={classNames('flex flex-row items-center justify-center w-full', classNameWrapper)}>

@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react'
+import { FC, useEffect } from 'react'
 import RNSplashScreen from 'react-native-splash-screen'
 
 export const SplashScreen: FC = (): null => {

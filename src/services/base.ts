@@ -1,23 +1,23 @@
-import {fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import type {BaseQueryApi, BaseQueryFn} from '@reduxjs/toolkit/query'
+import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { BaseQueryApi, BaseQueryFn } from '@reduxjs/toolkit/query'
 import Snackbar from 'react-native-snackbar'
 
-import {camelizeKeys, decamelizeKeys} from 'humps'
-import {get, isEmpty} from 'lodash'
+import { camelizeKeys, decamelizeKeys } from 'humps'
+import { get, isEmpty } from 'lodash'
 import Config from 'react-native-config'
 
 import ERROR_MESSAGE from 'src/constants/error-message'
-import {IBaseResponse} from 'src/interfaces/base'
-import {resetCredentials} from 'src/store/auth'
-import {deviceStorage} from 'src/store/storage'
+import { IBaseResponse } from 'src/interfaces/base'
+import { resetCredentials } from 'src/store/auth'
+import { deviceStorage } from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
-import {store} from 'src/store'
+import { store } from 'src/store'
 
 const isDevelopment = Config.NODE_ENV === 'development'
 const errorCodeSkipList: string[] = []
 
 export const transformResponse = (response: IBaseResponse) => {
-  const {success} = response
+  const { success } = response
   if (success) {
     return camelizeKeys(response)
   }
@@ -32,7 +32,7 @@ export const baseQuery = fetchBaseQuery({
     const accessTokenStore = get(state, 'tokens.accessToken', '')
 
     // get access token from storage
-    const {value: accessTokenLocal} = await deviceStorage.getItem(storageKeys.access_token)
+    const { value: accessTokenLocal } = await deviceStorage.getItem(storageKeys.access_token)
 
     const accessToken = accessTokenLocal || accessTokenStore
     if (accessToken) {
@@ -45,7 +45,7 @@ export const baseQuery = fetchBaseQuery({
 export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
   const body = args.body instanceof FormData ? args.body : decamelizeKeys(args.body)
   const params = decamelizeKeys(args.params)
-  const argsCustom = {...args, body, params}
+  const argsCustom = { ...args, body, params }
   const refreshToken = deviceStorage.getItem(storageKeys.refresh_token)
 
   let result: any = await baseQuery(argsCustom, api, extraOptions)
@@ -60,14 +60,14 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
       {
         url: '/auth/refresh',
         method: 'POST',
-        body: {refresh_token: refreshToken},
+        body: { refresh_token: refreshToken },
       },
       api,
       extraOptions,
     )
 
     if (refreshResult.data) {
-      const {accessToken = '', refreshToken: refreshTokenNew = ''} = camelizeKeys(refreshResult)
+      const { accessToken = '', refreshToken: refreshTokenNew = '' } = camelizeKeys(refreshResult)
 
       deviceStorage.saveItem(storageKeys.access_token, accessToken)
       deviceStorage.saveItem(storageKeys.refresh_token, refreshTokenNew)

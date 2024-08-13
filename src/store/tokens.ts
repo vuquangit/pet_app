@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ITokens {
   accessToken: string | null
@@ -22,5 +22,5 @@ export const tokensSlice = createSlice({
   },
 })
 
-export const {setTokens, resetTokens} = tokensSlice.actions
+export const { setTokens, resetTokens } = tokensSlice.actions
 export default tokensSlice.reducer

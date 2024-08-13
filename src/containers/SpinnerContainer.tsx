@@ -1,13 +1,13 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 
-import {useAppSelector} from 'src/store/hook'
+import { useAppSelector } from 'src/store/hook'
 import Spinner from 'src/components/Spinner'
 
 type PropsType = {
   children: React.ReactNode
 }
 
-export const SpinnerContainer: FC<PropsType> = ({children}) => {
+export const SpinnerContainer: FC<PropsType> = ({ children }) => {
   const isLaunching = useAppSelector(state => state.launching.isLaunching)
 
   return (

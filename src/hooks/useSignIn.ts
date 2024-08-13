@@ -1,29 +1,29 @@
-import {GoogleSignin} from '@react-native-google-signin/google-signin'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Config from 'react-native-config'
-import {useNavigation} from '@react-navigation/core'
-import {StackNavigationProp} from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 
-import {deviceStorage} from 'src/store/storage'
+import { deviceStorage } from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
-import {useLoginMutation} from 'src/services/auth'
-import {useAppDispatch} from 'src/store/hook'
-import {setLaunching} from 'src/store/launching'
-import {setTokens} from 'src/store/tokens'
+import { useLoginMutation } from 'src/services/auth'
+import { useAppDispatch } from 'src/store/hook'
+import { setLaunching } from 'src/store/launching'
+import { setTokens } from 'src/store/tokens'
 import useProfile from './useProfile'
-import {IAuthRequest, IAuthResponse} from 'src/interfaces'
-import {useOauthGoogleAppMutation} from 'src/services/oauth'
+import { IAuthRequest, IAuthResponse } from 'src/interfaces'
+import { useOauthGoogleAppMutation } from 'src/services/oauth'
 import EXCEPTION_CODE from 'src/constants/errorCode'
 
 export type RootStackParamList = {
-  SignUp: {email: string; name: string} | undefined
+  SignUp: { email: string; name: string } | undefined
 }
 
 export const useSignIn = () => {
   const dispatch = useAppDispatch()
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
-  const [login, {isLoading, error}] = useLoginMutation()
-  const [oauthGoogleApp, {isLoading: isGoogleLoading}] = useOauthGoogleAppMutation()
-  const {fetchProfile} = useProfile()
+  const [login, { isLoading, error }] = useLoginMutation()
+  const [oauthGoogleApp, { isLoading: isGoogleLoading }] = useOauthGoogleAppMutation()
+  const { fetchProfile } = useProfile()
 
   GoogleSignin.configure({
     webClientId: Config.GOOGLE_CLIENT_ID_WEB, // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
@@ -38,12 +38,12 @@ export const useSignIn = () => {
     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
   })
 
-  const onSubmit = async ({email, password}: IAuthRequest, isRemember: boolean) => {
+  const onSubmit = async ({ email, password }: IAuthRequest, isRemember: boolean) => {
     // Sign in and redirect to the proper destination if successful.
     try {
-      dispatch(setLaunching({isLaunching: true}))
+      dispatch(setLaunching({ isLaunching: true }))
 
-      const loginResponse = await login({email, password}).unwrap()
+      const loginResponse = await login({ email, password }).unwrap()
       const tokens = loginResponse.result?.data
       if (!tokens) {
         return
@@ -53,7 +53,7 @@ export const useSignIn = () => {
     } catch {
       console.log('Login error')
     } finally {
-      dispatch(setLaunching({isLaunching: false}))
+      dispatch(setLaunching({ isLaunching: false }))
     }
   }
 
@@ -67,7 +67,7 @@ export const useSignIn = () => {
     }
 
     // save tokens to store
-    dispatch(setTokens({accessToken: tokens.accessToken, refreshToken: tokens.refreshToken}))
+    dispatch(setTokens({ accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }))
 
     // fetch profile
     await fetchProfile()
@@ -80,7 +80,7 @@ export const useSignIn = () => {
   let userInfo: any = null
   const googleSignIn = async () => {
     try {
-      dispatch(setLaunching({isLaunching: true}))
+      dispatch(setLaunching({ isLaunching: true }))
 
       await GoogleSignin.hasPlayServices()
       userInfo = await GoogleSignin.signIn()
@@ -104,10 +104,10 @@ export const useSignIn = () => {
       if (code === EXCEPTION_CODE.USER.EMAIL_NOT_FOUND) {
         const email = userInfo?.user?.email || ''
         const name = userInfo?.user?.name || ''
-        navigation.navigate('SignUp', {email, name})
+        navigation.navigate('SignUp', { email, name })
       }
     } finally {
-      dispatch(setLaunching({isLaunching: false}))
+      dispatch(setLaunching({ isLaunching: false }))
       userInfo = null
     }
   }

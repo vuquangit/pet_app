@@ -1,9 +1,9 @@
-import {createApi} from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
-import {IBaseResponse} from 'src/interfaces/base'
-import {customBaseQuery} from 'src/services/base'
-import {IOauthRequest} from 'src/interfaces/oauth'
-import {IAuthResponse} from 'src/interfaces'
+import { IBaseResponse } from 'src/interfaces/base'
+import { customBaseQuery } from 'src/services/base'
+import { IOauthRequest } from 'src/interfaces/oauth'
+import { IAuthResponse } from 'src/interfaces'
 export const oauthApi = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'oauthApi',
@@ -20,4 +20,4 @@ export const oauthApi = createApi({
   }),
 })
 
-export const {useOauthGoogleAppMutation} = oauthApi
+export const { useOauthGoogleAppMutation } = oauthApi

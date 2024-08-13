@@ -1,10 +1,10 @@
-import {TextInput, View, Text, TextInputProps, TouchableOpacity} from 'react-native'
-import React, {FC, useState} from 'react'
+import { TextInput, View, Text, TextInputProps, TouchableOpacity } from 'react-native'
+import React, { FC, useState } from 'react'
 import classNames from 'classnames'
-import {useController, UseControllerProps} from 'react-hook-form'
-import {faEye} from '@fortawesome/free-solid-svg-icons/faEye'
-import {faEyeSlash} from '@fortawesome/free-solid-svg-icons/faEyeSlash'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import { useController, UseControllerProps } from 'react-hook-form'
+import { faEye } from '@fortawesome/free-solid-svg-icons/faEye'
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons/faEyeSlash'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 export interface BaseInputProps extends Omit<TextInputProps, 'defaultValue'>, UseControllerProps {
   name: string
@@ -26,8 +26,8 @@ export const InputField: FC<BaseInputProps> = ({
   placeholder,
   ...props
 }) => {
-  const {name, rules, defaultValue} = props
-  const {field} = useController({name, rules, defaultValue})
+  const { name, rules, defaultValue } = props
+  const { field } = useController({ name, rules, defaultValue })
   const [focused, setFocused] = useState<boolean>(false)
   const [isPasswordSecure, setIsPasswordSecure] = useState<boolean>(props.type === 'password')
 

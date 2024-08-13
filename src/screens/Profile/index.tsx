@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
-import {StatusBar, StyleSheet, Text, View} from 'react-native'
+import React, { FC } from 'react'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 
-import {useAppSelector} from 'src/store/hook'
-import {selectCurrentUser} from 'src/store/auth'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
+import { useAppSelector } from 'src/store/hook'
+import { selectCurrentUser } from 'src/store/auth'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
 import ROLE from 'src/constants/role'
 
 export const ProfileScreen: FC = () => {

@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import {
   RefreshControlProps,
   KeyboardAvoidingView,
@@ -6,9 +6,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native'
-import {SafeAreaView} from './SafeAreaView'
-import {ScrollView} from './ScrollView'
-import {Edges} from 'react-native-safe-area-context'
+import { SafeAreaView } from './SafeAreaView'
+import { ScrollView } from './ScrollView'
+import { Edges } from 'react-native-safe-area-context'
 
 type PropsType = {
   children: React.ReactNode

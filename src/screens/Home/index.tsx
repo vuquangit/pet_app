@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import React, { FC } from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Dinosaur from './Dinosaur'
 import HomeList from './HomeList'
 
@@ -12,7 +12,7 @@ export const HomeScreen: FC = () => {
       screenOptions={{
         headerShown: true,
         headerTintColor: 'white',
-        headerStyle: {backgroundColor: 'tomato'},
+        headerStyle: { backgroundColor: 'tomato' },
       }}>
       <HomeStack.Screen
         name="home-list"

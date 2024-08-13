@@ -1,4 +1,4 @@
-import {ERoles} from '../enums/roles'
+import { ERoles } from '../enums/roles'
 
 export interface IAuthRequest {
   email: string

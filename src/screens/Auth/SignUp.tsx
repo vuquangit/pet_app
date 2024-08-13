@@ -1,14 +1,14 @@
-import React, {FC, useEffect} from 'react'
-import {Text, View, Keyboard} from 'react-native'
-import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
-import {get} from 'lodash'
-import {useRoute} from '@react-navigation/native'
+import React, { FC, useEffect } from 'react'
+import { Text, View, Keyboard } from 'react-native'
+import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { get } from 'lodash'
+import { useRoute } from '@react-navigation/native'
 
-import {useSignUp} from 'src/hooks/useSignUp'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
-import {InputField, ButtonField} from 'src/components/Form'
-import {Link} from 'src/components/Link'
-import {PATTERN_EMAIL} from 'src/constants/patterns'
+import { useSignUp } from 'src/hooks/useSignUp'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
+import { InputField, ButtonField } from 'src/components/Form'
+import { Link } from 'src/components/Link'
+import { PATTERN_EMAIL } from 'src/constants/patterns'
 import ERROR_MESSAGE from 'src/constants/error-message'
 
 type FormValues = {
@@ -22,12 +22,12 @@ type SignUpTypes = {
   navigation: any
 }
 
-export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
+export const SignUpScreen: FC<SignUpTypes> = ({ navigation: { navigate } }) => {
   const route = useRoute()
 
-  const {isLoading, isSuccess, error, onSubmit} = useSignUp()
-  const {...methods} = useForm({
-    defaultValues: {email: '', name: '', password: '', confirmPassword: ''},
+  const { isLoading, isSuccess, error, onSubmit } = useSignUp()
+  const { ...methods } = useForm({
+    defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
@@ -99,7 +99,7 @@ export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
                 label="Password"
                 placeholder="Password"
                 classNameWrapper="mb-8"
-                rules={{required: 'Password is required'}}
+                rules={{ required: 'Password is required' }}
                 error={methods.formState.errors.password?.message}
                 onSubmitEditing={() => methods.setFocus('confirmPassword')}
               />
@@ -134,7 +134,7 @@ export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
                 <Text className="mr-1 text-sm font-light text-gray-500 dark:text-gray-400">
                   Do you already have an account?
                 </Text>
-                <Link to={{screen: 'SignIn'}}>Sign in</Link>
+                <Link to={{ screen: 'SignIn' }}>Sign in</Link>
               </View>
             </>
           ) : (

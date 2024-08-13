@@ -1,6 +1,6 @@
-import React, {FC} from 'react'
-import {Text} from 'react-native'
-import {Link as RNLink} from '@react-navigation/native'
+import React, { FC } from 'react'
+import { Text } from 'react-native'
+import { Link as RNLink } from '@react-navigation/native'
 import classNames from 'classnames'
 // import type {To} from '@react-navigation/native/lib/typescript/src/useLinkTo'
 
@@ -10,7 +10,7 @@ interface PropsType extends React.ComponentProps<typeof RNLink> {
   contentClassName?: string
 }
 
-export const Link: FC<PropsType> = ({children, to, contentClassName, ...restProps}) => {
+export const Link: FC<PropsType> = ({ children, to, contentClassName, ...restProps }) => {
   return (
     <RNLink to={to} {...restProps}>
       <Text

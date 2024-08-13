@@ -1,16 +1,16 @@
-import React, {FC} from 'react'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import React, { FC } from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import {SignInScreen} from 'src/screens/Auth/SignIn'
-import {SignUpScreen} from 'src/screens/Auth/SignUp'
-import {ForgotPasswordScreen} from 'src/screens/Auth/ForgotPassword'
+import { SignInScreen } from 'src/screens/Auth/SignIn'
+import { SignUpScreen } from 'src/screens/Auth/SignUp'
+import { ForgotPasswordScreen } from 'src/screens/Auth/ForgotPassword'
 
-import {useAuth} from 'src/hooks/useAuth'
+import { useAuth } from 'src/hooks/useAuth'
 
 const Auth = createNativeStackNavigator()
 
 export const AuthStack: FC = () => {
-  const {isLoggedIn} = useAuth()
+  const { isLoggedIn } = useAuth()
 
   return (
     <Auth.Navigator

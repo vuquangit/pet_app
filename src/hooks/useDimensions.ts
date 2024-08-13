@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
-import {Dimensions, ScaledSize} from 'react-native'
+import { useEffect, useState } from 'react'
+import { Dimensions, ScaledSize } from 'react-native'
 
 export type UseDimensions = {
   dimensions: {
@@ -18,8 +18,8 @@ export const useDimensions = (): UseDimensions => {
   })
 
   useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
-      setDimensions({window, screen})
+    const subscription = Dimensions.addEventListener('change', ({ window, screen }) => {
+      setDimensions({ window, screen })
     })
     return () => subscription?.remove()
   })

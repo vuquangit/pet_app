@@ -54,7 +54,7 @@ export type Props = {
  *
  * @extends TouchableRipple props https://callstack.github.io/react-native-paper/docs/components/TouchableRipple
  */
-const DataTableRow = ({onPress, style, children, pointerEvents, ...rest}: Props) => {
+const DataTableRow = ({ onPress, style, children, pointerEvents, ...rest }: Props) => {
   // const theme = useInternalTheme(themeOverrides)
   // const borderBottomColor = theme.isV3
   //   ? theme.colors.surfaceVariant
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
 export default DataTableRow
 
 // @component-docs ignore-next-line
-export {DataTableRow}
+export { DataTableRow }

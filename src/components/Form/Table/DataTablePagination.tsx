@@ -1,12 +1,12 @@
 import * as React from 'react'
-import {ColorValue, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faBackwardStep} from '@fortawesome/free-solid-svg-icons/faBackwardStep'
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons/faChevronLeft'
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons/faChevronRight'
-import {faForwardStep} from '@fortawesome/free-solid-svg-icons/faForwardStep'
+import { ColorValue, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faBackwardStep } from '@fortawesome/free-solid-svg-icons/faBackwardStep'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faForwardStep } from '@fortawesome/free-solid-svg-icons/faForwardStep'
 
-import {ButtonField, Dropdown, IComboboxItem} from 'src/components/Form'
+import { ButtonField, Dropdown, IComboboxItem } from 'src/components/Form'
 
 export type Props = React.ComponentPropsWithRef<typeof View> &
   PaginationControlsProps &
@@ -152,7 +152,7 @@ const PaginationDropdown = ({
   onItemsPerPageChange,
 }: PaginationDropdownProps) => {
   const data: IComboboxItem[] = numberOfItemsPerPageList.map(item => {
-    return {label: `${item}`, value: item}
+    return { label: `${item}`, value: item }
   })
 
   const selected: IComboboxItem = {
@@ -251,4 +251,4 @@ const styles = StyleSheet.create({
 
 export default DataTablePagination
 
-export {DataTablePagination}
+export { DataTablePagination }

@@ -3,5 +3,6 @@ module.exports = {
   extends: '@react-native',
   rules: {
     semi: ['error', 'never'],
+    'object-curly-spacing': ['error', 'always'],
   },
 }

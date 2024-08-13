@@ -1,5 +1,5 @@
-import {IAuthMe} from 'src/interfaces'
-import {useAppSelector} from '../store/hook'
+import { IAuthMe } from 'src/interfaces'
+import { useAppSelector } from '../store/hook'
 
 export type UseAuthReturnType = {
   isLoggedIn: boolean

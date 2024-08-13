@@ -1,4 +1,4 @@
-import {ERoles} from 'src/enums/roles'
+import { ERoles } from 'src/enums/roles'
 
 const ROLE = {
   [ERoles.SUPER_ADMIN]: 'Super Admin',

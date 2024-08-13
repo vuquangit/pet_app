@@ -6,9 +6,9 @@ import {
   IAuthResponse,
   IRegisterRequest,
 } from '../interfaces/auth'
-import {IBaseResponse} from '../interfaces/base'
-import {customBaseQuery} from '../services/base'
-import {createApi} from '@reduxjs/toolkit/query/react'
+import { IBaseResponse } from '../interfaces/base'
+import { customBaseQuery } from '../services/base'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -55,11 +55,11 @@ export const authApi = createApi({
       }),
     }),
 
-    forgotPassword: builder.mutation<IBaseResponse<{success: boolean}>, string>({
+    forgotPassword: builder.mutation<IBaseResponse<{ success: boolean }>, string>({
       query: email => ({
         url: '/auth/forgot-password',
         method: 'POST',
-        body: {email},
+        body: { email },
       }),
     }),
   }),

@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Image, Pressable, Text, View} from 'react-native'
-import Canvas, {Image as CanvasImage} from 'react-native-canvas'
+import React, { useEffect, useRef, useState } from 'react'
+import { Image, Pressable, Text, View } from 'react-native'
+import Canvas, { Image as CanvasImage } from 'react-native-canvas'
 
-import {deviceStorage} from 'src/store/storage'
+import { deviceStorage } from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
-import {useDimensions} from 'src/hooks/useDimensions'
+import { useDimensions } from 'src/hooks/useDimensions'
 import classNames from 'classnames'
 import TopScores from './TopScores'
 
@@ -32,7 +32,7 @@ type OptionsType = {
 
 const Dinosaur: React.FC = () => {
   const canvasEl = useRef<Canvas | null>()
-  const {dimensions} = useDimensions()
+  const { dimensions } = useDimensions()
 
   const [isShowStart, setIsShowStart] = useState(true)
 
@@ -117,7 +117,7 @@ const Dinosaur: React.FC = () => {
     const PADDING_TOP = 40
 
     const ctx = canvasEl.current?.getContext('2d')
-    const {width, height} = canvasEl.current
+    const { width, height } = canvasEl.current
 
     ctx.clearRect(0, 0, width, height)
     ctx.save()

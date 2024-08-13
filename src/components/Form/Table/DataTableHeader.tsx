@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 export type Props = React.ComponentPropsWithRef<typeof View> & {
   /**
@@ -35,7 +35,7 @@ export type Props = React.ComponentPropsWithRef<typeof View> & {
  * ```
  */
 
-const DataTableHeader = ({children, style, ...rest}: Props) => {
+const DataTableHeader = ({ children, style, ...rest }: Props) => {
   return (
     <View {...rest} style={[styles.header, style]}>
       {children}
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
 export default DataTableHeader
 
 // @component-docs ignore-next-line
-export {DataTableHeader}
+export { DataTableHeader }
