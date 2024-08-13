@@ -1,19 +1,18 @@
-import React, {FC, useEffect, useState} from 'react'
-import {Text, View, Keyboard} from 'react-native'
+import React, { FC, useEffect, useState } from 'react'
+import { Text, View, Keyboard } from 'react-native'
 import Config from 'react-native-config'
-import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faGoogle} from '@fortawesome/free-brands-svg-icons/faGoogle'
-import {useRoute} from '@react-navigation/native'
-import {get} from 'lodash'
+import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { useRoute } from '@react-navigation/native'
+import { get } from 'lodash'
 
-import {useSignIn} from 'src/hooks/useSignIn'
-import {ScreenLayout} from 'src/layouts/ScreenLayout'
-import {InputField, ButtonField, CheckBoxField} from 'src/components/Form'
-import {Divider} from 'src/components/Divider'
-import {Link} from 'src/components/Link'
-import {PATTERN_EMAIL} from 'src/constants/patterns'
+import { useSignIn } from 'src/hooks/useSignIn'
+import { ScreenLayout } from 'src/layouts/ScreenLayout'
+import { InputField, ButtonField, CheckBoxField } from 'src/components/Form'
+import { Divider } from 'src/components/Divider'
+import { Link } from 'src/components/Link'
+import { PATTERN_EMAIL } from 'src/constants/patterns'
 import ERROR_MESSAGE from 'src/constants/error-message'
+import GoogleIcon from 'src/assets/icons/google.svg'
 
 type FormValues = {
   email: string
@@ -21,11 +20,11 @@ type FormValues = {
 }
 
 export const SignInScreen: FC = () => {
-  const {isLoading, error, onSubmit} = useSignIn()
+  const { isLoading, error, onSubmit, googleSignIn, isGoogleLoading } = useSignIn()
   const [isRemember, setIsRemember] = useState<boolean>(true)
   const route = useRoute()
 
-  const {...methods} = useForm({
+  const { ...methods } = useForm({
     defaultValues: {
       email: Config?.FAKE_EMAIL || '',
       password: Config?.FAKE_PASSWORD || '',
@@ -71,10 +70,15 @@ export const SignInScreen: FC = () => {
             Pet Island
           </Text>
 
-          <ButtonField title="" variant="secondary" className="w-full mb-8">
+          <ButtonField
+            title=""
+            variant="secondary"
+            className="mb-8"
+            onPress={googleSignIn}
+            disabled={isGoogleLoading}>
             <View className="flex flex-row items-center justify-center">
-              <FontAwesomeIcon icon={faGoogle} color="#4b5563" size={20} />
-              <Text className="mx-2 text-sm text-green-600">Sign In With Google</Text>
+              <GoogleIcon width={25} height={25} />
+              <Text className="mx-2 text-lg font-bold text-gray-800">Sign In With Google</Text>
             </View>
           </ButtonField>
 
@@ -103,20 +107,20 @@ export const SignInScreen: FC = () => {
             label="Password"
             placeholder="Password"
             classNameWrapper="mb-2"
-            rules={{required: 'Password is required'}}
+            rules={{ required: 'Password is required' }}
             error={getFieldError('password', ['USER.WRONG_PASSWORD'])}
             onSubmitEditing={methods.handleSubmit(handleSubmit, onError)}
           />
 
           <View className="flex flex-row items-center justify-between w-full mb-8">
             <CheckBoxField label="Remember me" value={isRemember} onValueChange={setIsRemember} />
-            <Link to={{screen: 'ForgotPassword'}}>Forgot Password?</Link>
+            <Link to={{ screen: 'ForgotPassword' }}>Forgot Password?</Link>
           </View>
 
           <ButtonField
             title="Sign in"
             variant="primary"
-            className="mb-4"
+            className="mb-6 shadow"
             disabled={isLoading}
             onPress={methods.handleSubmit(handleSubmit, onError)}
           />
@@ -125,7 +129,7 @@ export const SignInScreen: FC = () => {
             <Text className="mr-1 text-sm font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet?
             </Text>
-            <Link to={{screen: 'SignUp'}}>Sign up</Link>
+            <Link to={{ screen: 'SignUp' }}>Sign up</Link>
           </View>
         </View>
       </FormProvider>

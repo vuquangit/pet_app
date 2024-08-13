@@ -7,12 +7,14 @@ import tokensReducer from './tokens'
 
 // Services
 import {authApi} from 'src/services/auth'
+import {oauthApi} from 'src/services/oauth'
 
 // init store
 const preloadedState = {}
 
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
+  [oauthApi.reducerPath]: oauthApi.reducer,
 
   auth: authReducer,
   launching: launchingReducer,
@@ -20,7 +22,8 @@ const rootReducer = combineReducers({
 })
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(authApi.middleware),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(authApi.middleware).concat(oauthApi.middleware),
   preloadedState,
 })
 

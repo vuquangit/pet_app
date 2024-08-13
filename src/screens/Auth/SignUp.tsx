@@ -1,7 +1,8 @@
-import React, {FC} from 'react'
+import React, {FC, useEffect} from 'react'
 import {Text, View, Keyboard} from 'react-native'
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form'
 import {get} from 'lodash'
+import {useRoute} from '@react-navigation/native'
 
 import {useSignUp} from 'src/hooks/useSignUp'
 import {ScreenLayout} from 'src/layouts/ScreenLayout'
@@ -22,6 +23,8 @@ type SignUpTypes = {
 }
 
 export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
+  const route = useRoute()
+
   const {isLoading, isSuccess, error, onSubmit} = useSignUp()
   const {...methods} = useForm({
     defaultValues: {email: '', name: '', password: '', confirmPassword: ''},
@@ -35,6 +38,19 @@ export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
   const onError: SubmitErrorHandler<FormValues> = errors => {
     return console.log(errors)
   }
+
+  useEffect(() => {
+    const email = get(route, 'params.email', '')
+    const name = get(route, 'params.name', '')
+
+    if (email) {
+      methods.setValue('email', email)
+    }
+    if (name) {
+      methods.setValue('name', name)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params])
 
   return (
     <ScreenLayout isSafeAreaView={true} isScrollView={true} edges={['right', 'left']}>
@@ -109,7 +125,7 @@ export const SignUpScreen: FC<SignUpTypes> = ({navigation: {navigate}}) => {
               <ButtonField
                 title="Sign up"
                 variant="primary"
-                className="mb-4"
+                className="mb-6"
                 disabled={isLoading}
                 onPress={methods.handleSubmit(handleSubmit, onError)}
               />
