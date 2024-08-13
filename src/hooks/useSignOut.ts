@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+
 import { deviceStorage } from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
 import { useAppDispatch } from 'src/store/hook'
@@ -20,6 +22,9 @@ export const useSignOut = () => {
       ])
       dispatch(resetCredentials())
       dispatch(resetTokens())
+
+      await GoogleSignin.revokeAccess()
+      await GoogleSignin.signOut()
 
       setIsSuccess(true)
     } finally {
