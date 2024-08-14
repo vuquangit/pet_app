@@ -98,6 +98,7 @@ export const useSignIn = () => {
       saveToken(tokens, true)
       // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error: any) {
+      console.log('GoogleSignIn error:', error)
       // @ts-ignore
       const code = error?.data?.error?.code
 
