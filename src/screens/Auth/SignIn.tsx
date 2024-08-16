@@ -32,7 +32,6 @@ export const SignInScreen: FC = () => {
   })
 
   const handleSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log('handleSubmit', data)
     Keyboard.dismiss()
     onSubmit(data, isRemember)
   }

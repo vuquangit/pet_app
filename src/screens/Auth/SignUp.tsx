@@ -89,7 +89,8 @@ export const SignUpScreen: FC<SignUpTypes> = ({ navigation: { navigate } }) => {
                 label="Name"
                 placeholder="Your name"
                 classNameWrapper="mb-6"
-                error={methods.formState.errors.password?.message}
+                rules={{ required: 'Name is required' }}
+                error={methods.formState.errors.name?.message}
                 onSubmitEditing={() => methods.setFocus('name')}
               />
 
