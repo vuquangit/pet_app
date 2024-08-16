@@ -9,7 +9,7 @@ import { store } from 'src/store'
 import { Navigation } from 'src/Navigation'
 import { VersionCheckContainer } from 'src/containers/VersionCheckContainer'
 import { SpinnerContainer } from 'src/containers/SpinnerContainer'
-import { enableDebugging } from 'src/helper/debuger'
+import { enableDebugging } from 'src/helper/debugger'
 
 const App: FC = () => {
   useEffect(() => {
@@ -31,4 +31,11 @@ const App: FC = () => {
   )
 }
 
-export default App
+let AppEntryPoint = App
+
+console.log('STORYBOOK_ENABLED::', process.env.STORYBOOK_ENABLED)
+if (process.env.STORYBOOK_ENABLED) {
+  AppEntryPoint = require('./.ondevice').default
+}
+
+export default AppEntryPoint

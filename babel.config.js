@@ -2,6 +2,8 @@ module.exports = {
   presets: ['module:@react-native/babel-preset'],
   plugins: [
     'nativewind/babel',
+    'transform-inline-environment-variables',
+    ['babel-plugin-react-docgen-typescript', { exclude: 'node_modules' }],
     [
       'module-resolver',
       {
