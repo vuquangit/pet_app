@@ -93,7 +93,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
 const handleNotification = (api: BaseQueryApi, result: any) => {
   const errorStatus = result.error.status
   const error = result?.error?.data?.error
-  console.log('Error::', error)
+  console.log('Result Error::', result?.error)
   let message = ''
   let navigateTo = ''
 
@@ -124,6 +124,11 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
     default:
       message = ''
       navigateTo = ''
+  }
+
+  if (errorStatus === 'FETCH_ERROR') {
+    message = 'Network Error'
+    navigateTo = ''
   }
 
   if (!isEmpty(error)) {

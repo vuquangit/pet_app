@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Image, Pressable, Text, View } from 'react-native'
 import Canvas, { Image as CanvasImage } from 'react-native-canvas'
+import classNames from 'classnames'
 
 import { deviceStorage } from 'src/store/storage'
 import storageKeys from 'src/constants/storage-keys'
 import { useDimensions } from 'src/hooks/useDimensions'
-import classNames from 'classnames'
-import TopScores from './TopScores'
+import TopScores, { TopScoresRef } from './TopScores'
+import { useAppSelector } from 'src/store/hook'
+import { selectCurrentUser } from 'src/store/auth'
+import { useCreateDinosaurMutation } from 'src/services/dinosaur'
 
 enum EStatus {
   STOP = 'STOP',
@@ -32,7 +35,10 @@ type OptionsType = {
 
 const Dinosaur: React.FC = () => {
   const canvasEl = useRef<Canvas | null>()
+  const topScoresRef = useRef<TopScoresRef>(null)
   const { dimensions } = useDimensions()
+  const [createDinosaur, { isLoading: isCreateDinosaurLoading }] = useCreateDinosaurMutation()
+  const user = useAppSelector(selectCurrentUser)
 
   const [isShowStart, setIsShowStart] = useState(true)
 
@@ -178,6 +184,10 @@ const Dinosaur: React.FC = () => {
       ctx.fillText('HIGH  ' + Math.floor(highScore), 30, 23)
     }
 
+    if (status === EStatus.OVER) {
+      createAndUpdateScore(score)
+    }
+
     // 障碍
     let pop = 0
     for (let i = 0; i < obstacles.length; ++i) {
@@ -210,6 +220,15 @@ const Dinosaur: React.FC = () => {
     }
 
     ctx.restore()
+  }
+
+  const createAndUpdateScore = async (score: number) => {
+    await createDinosaur({
+      userId: user.id,
+      score: score,
+    })
+
+    await topScoresRef?.current?.refresh()
   }
 
   const setTimer = () => {
@@ -386,11 +405,10 @@ const Dinosaur: React.FC = () => {
         </View>
 
         <View
-          className={classNames('absolute top-[180px] left-0 p-3', {
+          className={classNames('absolute top-[180px] left-0 p-3 w-full', {
             // hidden: statusText === EStatus.START,
           })}>
-          <Text className="text-xl text-[#595959] font-bold">Top scores</Text>
-          <TopScores />
+          <TopScores ref={topScoresRef} isCreating={isCreateDinosaurLoading} />
         </View>
       </View>
     </Pressable>

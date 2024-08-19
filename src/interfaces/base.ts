@@ -6,11 +6,21 @@ export type ErrorResponse = {
 
 export type ErrorsResponse = { errors?: Array<ErrorResponse> } & ErrorResponse
 
+export interface IMeta {
+  currentPage: number
+  from: number
+  to: number
+  perPage: number
+  lastPage: number
+  total: number
+}
+
 export interface IBaseResponse<T = any> {
   status?: number
   success?: boolean
   result?: {
     data?: T
+    meta: IMeta
   }
   error?: any
 }

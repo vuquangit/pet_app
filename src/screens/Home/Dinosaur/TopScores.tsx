@@ -1,58 +1,121 @@
-import * as React from 'react'
-import DataTable from 'src/components/Form/Table/DataTable'
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { IDinosaur } from 'src/interfaces'
 
-const TopScores = () => {
-  const [page, setPage] = React.useState<number>(0)
-  const [numberOfItemsPerPageList] = React.useState([5, 10, 20])
-  const [itemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0])
+import { useLazyGetDinosaurListQuery } from 'src/services/dinosaur'
 
-  const [items] = React.useState(
-    Array(100)
-      .fill(undefined)
-      .map((_, index) => ({
-        key: index,
-        name: `Item ${index + 1}`,
-        calories: 356 + index,
-        fat: 16 + index * 2,
-      })),
+type Props = {
+  isCreating: boolean
+}
+
+export type TopScoresRef = {
+  refresh: () => Promise<void>
+}
+
+export const TopScores = forwardRef<TopScoresRef, Props>((props, ref) => {
+  const { isCreating } = props
+
+  const [getDinosaurList, { isLoading }] = useLazyGetDinosaurListQuery()
+
+  const [data, setData] = useState<IDinosaur[]>([])
+  const [isFirstPageReceived, setIsFirstPageReceived] = useState(false)
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    current: 1,
+    total: 0,
+  })
+
+  // Pass the ref to the useImperativeHandle hook
+  useImperativeHandle(
+    ref,
+    () => ({
+      refresh: async () => {
+        await fetchData()
+      },
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   )
 
-  const from = page * itemsPerPage
-  const to = Math.min((page + 1) * itemsPerPage, items.length)
+  const fetchData = async () => {
+    const dataRes = await getDinosaurList({
+      page: pagination.page,
+      limit: pagination.limit,
+      top: 10,
+    }).unwrap()
 
-  React.useEffect(() => {
-    setPage(0)
-  }, [itemsPerPage])
+    const newData = dataRes.result?.data || []
+    const meta = dataRes.result?.meta
+    // setData(prevData => [...prevData, ...newData])
+    setData(newData)
+    setPagination(prev => ({
+      ...prev,
+      total: meta?.total || 0,
+    }))
+
+    !isFirstPageReceived && setIsFirstPageReceived(true)
+  }
+
+  // const fetchNextPage = () => {
+  //   if (data.length > 100) {
+  //     return
+  //   }
+  //   fetchData()
+  // }
+
+  useEffect(() => {
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const renderItem = ({ item }: { item: IDinosaur }) => {
+    return (
+      <View key={item.id} className="flex flex-row justify-between w-full px-4 py-2">
+        <Text className="text-lg text-[#595959]">{item.user.name}</Text>
+        <Text className="text-xl text-[#595959]">{item.score}</Text>
+      </View>
+    )
+  }
+
+  const ListEndLoader = () => {
+    if (isLoading) {
+      // Show loader at the end of list when fetching next page data.
+      return (
+        <View className="flex justify-center w-full">
+          <ActivityIndicator size={'large'} />
+        </View>
+      )
+    }
+  }
+
+  if (!isFirstPageReceived && isLoading) {
+    // Show loader when fetching first page data.
+    return (
+      <View className="flex items-center justify-center w-full">
+        <ActivityIndicator size={'small'} />
+      </View>
+    )
+  }
 
   return (
-    <DataTable>
-      <DataTable.Header>
-        <DataTable.Title>Dessert</DataTable.Title>
-        <DataTable.Title numeric>Calories</DataTable.Title>
-        <DataTable.Title numeric>Fat</DataTable.Title>
-      </DataTable.Header>
-
-      {items.slice(from, to).map(item => (
-        <DataTable.Row key={item.key}>
-          <DataTable.Cell>{item.name}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.calories}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.fat}</DataTable.Cell>
-        </DataTable.Row>
-      ))}
-
-      <DataTable.Pagination
-        page={page}
-        numberOfPages={Math.ceil(items.length / itemsPerPage)}
-        onPageChange={_page => setPage(_page)}
-        label={`${from + 1}-${to} of ${items.length}`}
-        numberOfItemsPerPageList={numberOfItemsPerPageList}
-        numberOfItemsPerPage={itemsPerPage}
-        onItemsPerPageChange={onItemsPerPageChange}
-        showFastPaginationControls
-        selectPageDropdownLabel={'Per page'}
+    <View className="w-full">
+      <Text className="text-xl text-[#595959] text-center font-bold">Top 10</Text>
+      {isCreating && (
+        <View className="flex items-center justify-center w-full">
+          <ActivityIndicator size={'small'} />
+        </View>
+      )}
+      <FlatList
+        className="w-full"
+        data={data}
+        renderItem={renderItem}
+        // onEndReached={fetchNextPage}
+        onEndReachedThreshold={0.8}
+        ListFooterComponent={ListEndLoader} // Loader when loading next page.
       />
-    </DataTable>
+    </View>
   )
-}
+})
 
 export default TopScores
