@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Dinosaur from './Dinosaur'
 import HomeList from './HomeList'
 import TableDemo from './TableDemo'
+import FlappyBird from './FlappyBird'
 
 // Stack
 const HomeStack = createNativeStackNavigator()
@@ -28,6 +29,13 @@ export const HomeScreen: FC = () => {
         component={Dinosaur}
         options={{
           title: 'Dinosaur game',
+        }}
+      />
+      <HomeStack.Screen
+        name="flappy-bird"
+        component={FlappyBird}
+        options={{
+          title: 'Flappy Bird',
         }}
       />
       <HomeStack.Screen

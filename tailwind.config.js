@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         primary: '#0070f3',
         spinner: 'rgba(0, 0, 0, 0.75)',
+        overlay: 'rgba(0, 0, 0, 0.5)',
       },
     },
   },

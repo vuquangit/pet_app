@@ -32,6 +32,19 @@ const HomeList: FC<PropsType> = ({ navigation }) => {
 
           <ButtonField
             className="w-[120px] h-[120px] p-1"
+            onPress={() => navigation.navigate('flappy-bird')}
+            title="">
+            <View className="flex items-center justify-end w-full h-full">
+              <Image
+                className="h-[50px] w-[65px]"
+                source={require('../../assets/images/flappy-bird/bird.png')}
+              />
+              <Text className="mt-3 font-bold text-center text-gray-800">Flappy bird</Text>
+            </View>
+          </ButtonField>
+
+          <ButtonField
+            className="w-[120px] h-[120px] p-1"
             onPress={() => navigation.navigate('tableDemo')}
             title="">
             <View className="flex items-center justify-end w-full h-full">
